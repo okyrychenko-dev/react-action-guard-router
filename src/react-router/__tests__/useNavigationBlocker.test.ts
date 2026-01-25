@@ -1,18 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useNavigationBlocker } from '../useNavigationBlocker';
-import type { UseNavigationBlockerOptions } from '../types';
-import { useBlocker } from 'react-router-dom';
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from '../../core';
-import { createBlockerMock, isNoArgBlocker } from './test-helpers';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
+import { useNavigationBlocker } from "../useNavigationBlocker";
+import type { UseNavigationBlockerOptions } from "../types";
+import { useBlocker } from "react-router-dom";
+import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
+import { createBlockerMock, isNoArgBlocker } from "./test-helpers";
 
 // Mock dependencies
-vi.mock('react-router-dom', () => ({
+vi.mock("react-router-dom", () => ({
   useBlocker: vi.fn(),
 }));
 
-vi.mock('../../core', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../core')>();
+vi.mock("../../core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../core")>();
   return {
     ...actual,
     useShouldBlock: vi.fn(),
@@ -24,48 +24,48 @@ const mockUseBlocker = vi.mocked(useBlocker);
 const mockUseShouldBlock = vi.mocked(useShouldBlock);
 const mockUseBeforeUnload = vi.mocked(useBeforeUnload);
 
-describe('useNavigationBlocker (React Router)', () => {
+describe("useNavigationBlocker (React Router)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseShouldBlock.mockReturnValue(false);
-    mockUseBlocker.mockReturnValue(createBlockerMock('unblocked'));
+    mockUseBlocker.mockReturnValue(createBlockerMock("unblocked"));
   });
 
-  describe('Basic functionality', () => {
-    it('should integrate with useShouldBlock', () => {
+  describe("Basic functionality", () => {
+    it("should integrate with useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
       expect(mockUseShouldBlock).toHaveBeenCalledWith(true, undefined);
     });
 
-    it('should pass scope to useShouldBlock', () => {
+    it("should pass scope to useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
-          scope: 'test-scope',
+          scope: "test-scope",
         })
       );
 
-      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, 'test-scope');
+      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, "test-scope");
     });
 
-    it('should handle both when and scope', () => {
+    it("should handle both when and scope", () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          scope: 'test-scope',
+          scope: "test-scope",
         })
       );
 
       // 'when' takes precedence, but both are passed
-      expect(mockUseShouldBlock).toHaveBeenCalledWith(true, 'test-scope');
+      expect(mockUseShouldBlock).toHaveBeenCalledWith(true, "test-scope");
     });
 
-    it('should integrate with React Router useBlocker', () => {
+    it("should integrate with React Router useBlocker", () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
@@ -75,21 +75,21 @@ describe('useNavigationBlocker (React Router)', () => {
       expect(mockUseBlocker).toHaveBeenCalled();
     });
 
-    it('should call useBeforeUnload when blockBrowserUnload is true', () => {
+    it("should call useBeforeUnload when blockBrowserUnload is true", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
           blockBrowserUnload: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Test message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Test message");
     });
 
-    it('should not call useBeforeUnload when blockBrowserUnload is false', () => {
+    it("should not call useBeforeUnload when blockBrowserUnload is false", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -103,10 +103,10 @@ describe('useNavigationBlocker (React Router)', () => {
     });
   });
 
-  describe('Blocking behavior', () => {
-    it('should return isBlocking: false when not blocking', () => {
+  describe("Blocking behavior", () => {
+    it("should return isBlocking: false when not blocking", () => {
       mockUseShouldBlock.mockReturnValue(false);
-      mockUseBlocker.mockReturnValue(createBlockerMock('unblocked'));
+      mockUseBlocker.mockReturnValue(createBlockerMock("unblocked"));
 
       const { result } = renderHook(() =>
         useNavigationBlocker({
@@ -117,9 +117,9 @@ describe('useNavigationBlocker (React Router)', () => {
       expect(result.current.isBlocking).toBe(false);
     });
 
-    it('should return isBlocking: true when blocking', () => {
+    it("should return isBlocking: true when blocking", () => {
       mockUseShouldBlock.mockReturnValue(true);
-      mockUseBlocker.mockReturnValue(createBlockerMock('blocked'));
+      mockUseBlocker.mockReturnValue(createBlockerMock("blocked"));
 
       const { result } = renderHook(() =>
         useNavigationBlocker({
@@ -131,8 +131,8 @@ describe('useNavigationBlocker (React Router)', () => {
     });
   });
 
-  describe('Callbacks', () => {
-    it('should use stable callback references', () => {
+  describe("Callbacks", () => {
+    it("should use stable callback references", () => {
       const onBlock = vi.fn();
       const onAllow = vi.fn();
 
@@ -154,13 +154,13 @@ describe('useNavigationBlocker (React Router)', () => {
 
       // Functions should be different (useCallback creates new function)
       // but callbacks are stable via useRef
-      expect(typeof blockerFn).toBe('function');
-      expect(typeof blockerFnAfterRerender).toBe('function');
+      expect(typeof blockerFn).toBe("function");
+      expect(typeof blockerFnAfterRerender).toBe("function");
     });
 
-    it('should proceed after async confirmation resolves true', async () => {
+    it("should proceed after async confirmation resolves true", async () => {
       mockUseShouldBlock.mockReturnValue(true);
-      const blocker = createBlockerMock('blocked');
+      const blocker = createBlockerMock("blocked");
       mockUseBlocker.mockReturnValue(blocker);
 
       let resolveConfirm: (value: boolean) => void = () => undefined;
@@ -172,14 +172,14 @@ describe('useNavigationBlocker (React Router)', () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Confirm?',
+          message: "Confirm?",
           onConfirm,
         })
       );
 
       const blockerFn = mockUseBlocker.mock.calls[0][0];
       if (!isNoArgBlocker(blockerFn)) {
-        throw new Error('Expected no-arg blocker function');
+        throw new Error("Expected no-arg blocker function");
       }
       let result = false;
       act(() => {
@@ -194,9 +194,122 @@ describe('useNavigationBlocker (React Router)', () => {
 
       expect(blocker.proceed).toHaveBeenCalled();
     });
+
+    it("should reset after async confirmation resolves false", async () => {
+      mockUseShouldBlock.mockReturnValue(true);
+      const blocker = createBlockerMock("blocked");
+      mockUseBlocker.mockReturnValue(blocker);
+
+      let resolveConfirm: (value: boolean) => void = () => undefined;
+      const confirmPromise = new Promise<boolean>((resolve) => {
+        resolveConfirm = resolve;
+      });
+      const onConfirm = vi.fn(() => confirmPromise);
+
+      renderHook(() =>
+        useNavigationBlocker({
+          when: true,
+          message: "Confirm?",
+          onConfirm,
+        })
+      );
+
+      const blockerFn = mockUseBlocker.mock.calls[0][0];
+      if (!isNoArgBlocker(blockerFn)) {
+        throw new Error("Expected no-arg blocker function");
+      }
+
+      let result = false;
+      act(() => {
+        result = blockerFn();
+      });
+      expect(result).toBe(true);
+
+      await act(async () => {
+        resolveConfirm(false);
+        await confirmPromise;
+      });
+
+      expect(blocker.reset).toHaveBeenCalled();
+      expect(blocker.proceed).not.toHaveBeenCalled();
+    });
+
+    it("should reset after async confirmation rejects", async () => {
+      mockUseShouldBlock.mockReturnValue(true);
+      const blocker = createBlockerMock("blocked");
+      mockUseBlocker.mockReturnValue(blocker);
+
+      let rejectConfirm: (value: Error) => void = () => undefined;
+      const confirmPromise = new Promise<boolean>((_, reject) => {
+        rejectConfirm = reject;
+      });
+      const onConfirm = vi.fn(() => confirmPromise);
+
+      renderHook(() =>
+        useNavigationBlocker({
+          when: true,
+          message: "Confirm?",
+          onConfirm,
+        })
+      );
+
+      const blockerFn = mockUseBlocker.mock.calls[0][0];
+      if (!isNoArgBlocker(blockerFn)) {
+        throw new Error("Expected no-arg blocker function");
+      }
+
+      let result = false;
+      act(() => {
+        result = blockerFn();
+      });
+      expect(result).toBe(true);
+
+      await act(async () => {
+        rejectConfirm(new Error("boom"));
+        try {
+          await confirmPromise;
+        } catch {
+          // Expected rejection.
+        }
+      });
+
+      expect(blocker.reset).toHaveBeenCalled();
+      expect(blocker.proceed).not.toHaveBeenCalled();
+    });
+
+    it("should block when sync confirmation returns false", () => {
+      mockUseShouldBlock.mockReturnValue(true);
+      const blocker = createBlockerMock("blocked");
+      mockUseBlocker.mockReturnValue(blocker);
+
+      const onConfirm = vi.fn(() => false);
+      const onAllow = vi.fn();
+
+      renderHook(() =>
+        useNavigationBlocker({
+          when: true,
+          message: "Confirm?",
+          onConfirm,
+          onAllow,
+        })
+      );
+
+      const blockerFn = mockUseBlocker.mock.calls[0][0];
+      if (!isNoArgBlocker(blockerFn)) {
+        throw new Error("Expected no-arg blocker function");
+      }
+
+      let result = false;
+      act(() => {
+        result = blockerFn();
+      });
+
+      expect(result).toBe(true);
+      expect(onAllow).not.toHaveBeenCalled();
+    });
   });
 
-  describe('Backward compatibility', () => {
+  describe("Backward compatibility", () => {
     it('should support deprecated "block" option', () => {
       const options: UseNavigationBlockerOptions = {
         block: true,
@@ -220,8 +333,8 @@ describe('useNavigationBlocker (React Router)', () => {
     });
   });
 
-  describe('Message handling', () => {
-    it('should use default message for browser unload', () => {
+  describe("Message handling", () => {
+    it("should use default message for browser unload", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -234,22 +347,22 @@ describe('useNavigationBlocker (React Router)', () => {
       expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, DEFAULT_UNLOAD_MESSAGE);
     });
 
-    it('should use custom message for browser unload', () => {
+    it("should use custom message for browser unload", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Custom message',
+          message: "Custom message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Custom message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Custom message");
     });
   });
 
-  describe('Performance', () => {
-    it('should update when blocking state changes', () => {
+  describe("Performance", () => {
+    it("should update when blocking state changes", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       const { rerender } = renderHook(() =>

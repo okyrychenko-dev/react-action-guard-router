@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useBeforeUnload, useShouldBlock, DEFAULT_UNLOAD_MESSAGE } from '../core';
-import type { UseNavigationBlockerOptions } from './types';
-import type { NavigationBlockerReturn } from '../core/types';
+import { useEffect } from "react";
+import { useBeforeUnload, useShouldBlock, DEFAULT_UNLOAD_MESSAGE } from "../core";
+import type { UseNavigationBlockerOptions } from "./types";
+import type { NavigationBlockerReturn } from "../core/types";
 
 /**
  * Blocks navigation in Next.js App Router applications.
@@ -63,10 +63,10 @@ export function useNavigationBlocker(
 
   // Log warning in development
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && shouldBlock) {
+    if (process.env.NODE_ENV === "development" && shouldBlock) {
       console.warn(
-        '[react-action-guard-router] App Router has limited blocking support. ' +
-          'Link clicks cannot be blocked. Use Pages Router for full support.'
+        "[react-action-guard-router] App Router has limited blocking support. " +
+          "Link clicks cannot be blocked. Use Pages Router for full support."
       );
     }
   }, [shouldBlock]);

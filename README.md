@@ -30,8 +30,8 @@ pnpm add @okyrychenko-dev/react-action-guard-router @okyrychenko-dev/react-actio
 
 This package requires the following peer dependencies:
 
-- [@okyrychenko-dev/react-action-guard](https://www.npmjs.com/package/@okyrychenko-dev/react-action-guard) ^0.6.0 - The core UI blocking library
-- [React](https://react.dev/) ^17.0.0 || ^18.0.0 || ^19.0.0
+- [@okyrychenko-dev/react-action-guard](https://www.npmjs.com/package/@okyrychenko-dev/react-action-guard) ^0.7.0 - The core UI blocking library
+- [React](https://react.dev/) ^18.0.0 || ^19.0.0
 - One of:
   - [react-router-dom](https://reactrouter.com/) ^6.0.0 - For React Router or Remix
   - [@tanstack/react-router](https://tanstack.com/router) ^1.0.0 - For TanStack Router

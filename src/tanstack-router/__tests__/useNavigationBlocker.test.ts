@@ -1,23 +1,23 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
-import { useNavigationBlocker } from '../useNavigationBlocker';
-import { useRouter } from '@tanstack/react-router';
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from '../../core';
-import type { SafeTanStackRouter } from '../types';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { useNavigationBlocker } from "../useNavigationBlocker";
+import { useRouter } from "@tanstack/react-router";
+import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
+import type { SafeTanStackRouter } from "../types";
 
 type RouterMock = SafeTanStackRouter | { history: null };
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   export function useRouter(): RouterMock;
 }
 
 // Mock dependencies
-vi.mock('@tanstack/react-router', () => ({
+vi.mock("@tanstack/react-router", () => ({
   useRouter: vi.fn(),
 }));
 
-vi.mock('../../core', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../core')>();
+vi.mock("../../core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../core")>();
   return {
     ...actual,
     useShouldBlock: vi.fn(),
@@ -29,9 +29,9 @@ const mockUseRouter = vi.mocked(useRouter);
 const mockUseShouldBlock = vi.mocked(useShouldBlock);
 const mockUseBeforeUnload = vi.mocked(useBeforeUnload);
 
-describe('useNavigationBlocker (TanStack Router)', () => {
+describe("useNavigationBlocker (TanStack Router)", () => {
   let mockUnblock: () => void;
-  let mockBlock: SafeTanStackRouter['history']['block'];
+  let mockBlock: SafeTanStackRouter["history"]["block"];
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,45 +48,45 @@ describe('useNavigationBlocker (TanStack Router)', () => {
     mockUseRouter.mockReturnValue(mockRouter);
   });
 
-  describe('Basic functionality', () => {
-    it('should integrate with useShouldBlock', () => {
+  describe("Basic functionality", () => {
+    it("should integrate with useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
       expect(mockUseShouldBlock).toHaveBeenCalledWith(true, undefined);
     });
 
-    it('should pass scope to useShouldBlock', () => {
+    it("should pass scope to useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
-          scope: 'test-scope',
+          scope: "test-scope",
         })
       );
 
-      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, 'test-scope');
+      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, "test-scope");
     });
 
-    it('should call useBeforeUnload when blockBrowserUnload is true', () => {
+    it("should call useBeforeUnload when blockBrowserUnload is true", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
           blockBrowserUnload: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Test message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Test message");
     });
   });
 
-  describe('TanStack Router history blocking', () => {
-    it('should call router.history.block when shouldBlock is true', () => {
+  describe("TanStack Router history blocking", () => {
+    it("should call router.history.block when shouldBlock is true", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -98,7 +98,7 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(mockBlock).toHaveBeenCalled();
     });
 
-    it('should not call router.history.block when shouldBlock is false', () => {
+    it("should not call router.history.block when shouldBlock is false", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       renderHook(() =>
@@ -110,7 +110,7 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(mockBlock).not.toHaveBeenCalled();
     });
 
-    it('should cleanup blocker on unmount', () => {
+    it("should cleanup blocker on unmount", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       const { unmount } = renderHook(() =>
@@ -124,7 +124,7 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(mockUnblock).toHaveBeenCalled();
     });
 
-    it('should cleanup and re-block when shouldBlock changes', () => {
+    it("should cleanup and re-block when shouldBlock changes", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       const { rerender } = renderHook(() =>
@@ -149,8 +149,8 @@ describe('useNavigationBlocker (TanStack Router)', () => {
     });
   });
 
-  describe('Blocking behavior', () => {
-    it('should return isBlocking: false when not blocking', () => {
+  describe("Blocking behavior", () => {
+    it("should return isBlocking: false when not blocking", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       const { result } = renderHook(() =>
@@ -162,7 +162,7 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(result.current.isBlocking).toBe(false);
     });
 
-    it('should return isBlocking: true when blocking', () => {
+    it("should return isBlocking: true when blocking", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       const { result } = renderHook(() =>
@@ -175,14 +175,14 @@ describe('useNavigationBlocker (TanStack Router)', () => {
     });
   });
 
-  describe('Callbacks', () => {
-    it('should pass blocker function to router.history.block', () => {
+  describe("Callbacks", () => {
+    it("should pass blocker function to router.history.block", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Test',
+          message: "Test",
         })
       );
 
@@ -190,8 +190,8 @@ describe('useNavigationBlocker (TanStack Router)', () => {
     });
   });
 
-  describe('Message handling', () => {
-    it('should use default message for browser unload', () => {
+  describe("Message handling", () => {
+    it("should use default message for browser unload", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -203,22 +203,22 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, DEFAULT_UNLOAD_MESSAGE);
     });
 
-    it('should use custom message', () => {
+    it("should use custom message", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Custom message',
+          message: "Custom message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Custom message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Custom message");
     });
   });
 
-  describe('Edge cases', () => {
-    it('should handle missing router.history gracefully', () => {
+  describe("Edge cases", () => {
+    it("should handle missing router.history gracefully", () => {
       mockUseShouldBlock.mockReturnValue(true);
       mockUseRouter.mockReturnValue({
         history: null,
@@ -235,9 +235,9 @@ describe('useNavigationBlocker (TanStack Router)', () => {
       expect(mockBlock).not.toHaveBeenCalled();
     });
 
-    it('should update blocking when message changes', () => {
+    it("should update blocking when message changes", () => {
       mockUseShouldBlock.mockReturnValue(true);
-      let message = 'Message 1';
+      let message = "Message 1";
 
       const { rerender } = renderHook(() =>
         useNavigationBlocker({
@@ -246,7 +246,7 @@ describe('useNavigationBlocker (TanStack Router)', () => {
         })
       );
 
-      message = 'Message 2';
+      message = "Message 2";
       rerender();
 
       // Should re-block with new message

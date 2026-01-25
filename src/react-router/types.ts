@@ -1,4 +1,4 @@
-import type { BaseNavigationBlockerOptions } from '../core/types';
+import type { BaseNavigationBlockerOptions } from "../core/types";
 
 /**
  * Options for React Router navigation blocker
@@ -16,7 +16,7 @@ export interface UseNavigationBlockerOptions extends BaseNavigationBlockerOption
  */
 export type UsePromptOptions = Omit<
   BaseNavigationBlockerOptions,
-  'message' | 'when' | 'scope' | 'title' | 'confirmText' | 'cancelText'
+  "message" | "when" | "scope" | "title" | "confirmText" | "cancelText"
 > & {
   /**
    * Message to show in confirmation dialog

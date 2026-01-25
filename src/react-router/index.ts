@@ -18,6 +18,6 @@
  * ```
  */
 
-export { useNavigationBlocker } from './useNavigationBlocker';
-export { usePrompt, usePromptWithOptions } from './usePrompt';
-export type { UseNavigationBlockerOptions, UsePromptOptions } from './types';
+export { useNavigationBlocker } from "./useNavigationBlocker";
+export { usePrompt, usePromptWithOptions } from "./usePrompt";
+export type { UseNavigationBlockerOptions, UsePromptOptions } from "./types";

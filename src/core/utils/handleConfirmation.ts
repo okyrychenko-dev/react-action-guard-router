@@ -1,9 +1,9 @@
-import { isThenable } from '../utils';
+import { isThenable } from "../utils";
 
 /**
  * Result of a confirmation action
  */
-export type ConfirmationResult = 'confirmed' | 'cancelled' | 'pending';
+export type ConfirmationResult = "confirmed" | "cancelled" | "pending";
 
 /**
  * Callbacks for handling confirmation results
@@ -79,16 +79,16 @@ export function handleConfirmation(
     // Handle thenable (Promise-like) results
     if (isThenable(result)) {
       // Async: return pending, caller handles the Promise
-      return 'pending';
+      return "pending";
     }
 
     // Sync: immediate result
     if (result) {
       onConfirm?.();
-      return 'confirmed';
+      return "confirmed";
     } else {
       onCancel?.();
-      return 'cancelled';
+      return "cancelled";
     }
   }
 
@@ -96,9 +96,9 @@ export function handleConfirmation(
   const confirmed = window.confirm(message);
   if (confirmed) {
     onConfirm?.();
-    return 'confirmed';
+    return "confirmed";
   } else {
     onCancel?.();
-    return 'cancelled';
+    return "cancelled";
   }
 }

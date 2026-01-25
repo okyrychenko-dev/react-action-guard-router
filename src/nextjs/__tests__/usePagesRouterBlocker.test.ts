@@ -1,20 +1,20 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
-import { useNavigationBlocker } from '../usePagesRouterBlocker';
-import { useRouter } from 'next/router';
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from '../../core';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { useNavigationBlocker } from "../usePagesRouterBlocker";
+import { useRouter } from "next/router";
+import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
 
-import { createMockRouter } from './test-helpers';
-import type { MockRouter, RouterEventHandler } from './test-helpers';
-import type { Mock } from 'vitest';
+import { createMockRouter } from "./test-helpers";
+import type { MockRouter, RouterEventHandler } from "./test-helpers";
+import type { Mock } from "vitest";
 
 // Mock dependencies
-vi.mock('next/router', () => ({
+vi.mock("next/router", () => ({
   useRouter: vi.fn(),
 }));
 
-vi.mock('../../core', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../core')>();
+vi.mock("../../core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../../core")>();
   return {
     ...actual,
     useShouldBlock: vi.fn(),
@@ -26,7 +26,7 @@ const mockUseRouter = vi.mocked(useRouter);
 const mockUseShouldBlock = vi.mocked(useShouldBlock);
 const mockUseBeforeUnload = vi.mocked(useBeforeUnload);
 
-describe('useNavigationBlocker (Next.js Pages Router)', () => {
+describe("useNavigationBlocker (Next.js Pages Router)", () => {
   let mockRouter: MockRouter;
   let onMock: Mock<(event: string, handler: RouterEventHandler) => void>;
   let offMock: Mock<(event: string, handler: RouterEventHandler) => void>;
@@ -41,45 +41,45 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
     mockUseRouter.mockReturnValue(mockRouter);
   });
 
-  describe('Basic functionality', () => {
-    it('should integrate with useShouldBlock', () => {
+  describe("Basic functionality", () => {
+    it("should integrate with useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
       expect(mockUseShouldBlock).toHaveBeenCalledWith(true, undefined);
     });
 
-    it('should pass scope to useShouldBlock', () => {
+    it("should pass scope to useShouldBlock", () => {
       renderHook(() =>
         useNavigationBlocker({
-          scope: 'test-scope',
+          scope: "test-scope",
         })
       );
 
-      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, 'test-scope');
+      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, "test-scope");
     });
 
-    it('should call useBeforeUnload when blockBrowserUnload is true', () => {
+    it("should call useBeforeUnload when blockBrowserUnload is true", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
           blockBrowserUnload: true,
-          message: 'Test message',
+          message: "Test message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Test message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Test message");
     });
   });
 
-  describe('Next.js router events', () => {
-    it('should register routeChangeStart listener when blocking', () => {
+  describe("Next.js router events", () => {
+    it("should register routeChangeStart listener when blocking", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -88,10 +88,10 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
         })
       );
 
-      expect(onMock).toHaveBeenCalledWith('routeChangeStart', expect.any(Function));
+      expect(onMock).toHaveBeenCalledWith("routeChangeStart", expect.any(Function));
     });
 
-    it('should not register listener when not blocking', () => {
+    it("should not register listener when not blocking", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       renderHook(() =>
@@ -103,7 +103,7 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
       expect(onMock).not.toHaveBeenCalled();
     });
 
-    it('should cleanup listener on unmount', () => {
+    it("should cleanup listener on unmount", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       const { unmount } = renderHook(() =>
@@ -116,10 +116,10 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
 
       unmount();
 
-      expect(offMock).toHaveBeenCalledWith('routeChangeStart', handler);
+      expect(offMock).toHaveBeenCalledWith("routeChangeStart", handler);
     });
 
-    it('should cleanup and re-register when blocking state changes', () => {
+    it("should cleanup and re-register when blocking state changes", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       const { rerender } = renderHook(() =>
@@ -137,8 +137,8 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
     });
   });
 
-  describe('Blocking behavior', () => {
-    it('should return isBlocking: false when not blocking', () => {
+  describe("Blocking behavior", () => {
+    it("should return isBlocking: false when not blocking", () => {
       mockUseShouldBlock.mockReturnValue(false);
 
       const { result } = renderHook(() =>
@@ -150,7 +150,7 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
       expect(result.current.isBlocking).toBe(false);
     });
 
-    it('should return isBlocking: true when blocking', () => {
+    it("should return isBlocking: true when blocking", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       const { result } = renderHook(() =>
@@ -163,8 +163,8 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
     });
   });
 
-  describe('Message handling', () => {
-    it('should use default message for browser unload', () => {
+  describe("Message handling", () => {
+    it("should use default message for browser unload", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -176,22 +176,22 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
       expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, DEFAULT_UNLOAD_MESSAGE);
     });
 
-    it('should use custom message', () => {
+    it("should use custom message", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Custom message',
+          message: "Custom message",
         })
       );
 
-      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, 'Custom message');
+      expect(mockUseBeforeUnload).toHaveBeenCalledWith(true, "Custom message");
     });
   });
 
-  describe('Custom confirmation', () => {
-    it('should re-attempt navigation after async confirmation', async () => {
+  describe("Custom confirmation", () => {
+    it("should re-attempt navigation after async confirmation", async () => {
       mockUseShouldBlock.mockReturnValue(true);
       const onAllow = vi.fn();
       let resolveConfirm: (value: boolean) => void = () => undefined;
@@ -203,7 +203,7 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
       renderHook(() =>
         useNavigationBlocker({
           when: true,
-          message: 'Confirm navigation?',
+          message: "Confirm navigation?",
           onConfirm,
           onAllow,
         })
@@ -211,24 +211,24 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
 
       const handler = onMock.mock.calls[0][1];
 
-      expect(() => handler('/next')).toThrow('Route change aborted by user');
-      expect(mockRouter.events.emit).toHaveBeenCalledWith('routeChangeError');
+      expect(() => handler("/next")).toThrow("Route change aborted by user");
+      expect(mockRouter.events.emit).toHaveBeenCalledWith("routeChangeError");
 
       resolveConfirm(true);
       await confirmPromise;
       await Promise.resolve();
 
-      expect(mockRouter.push).toHaveBeenCalledWith('/next');
+      expect(mockRouter.push).toHaveBeenCalledWith("/next");
 
-      expect(() => handler('/next')).not.toThrow();
+      expect(() => handler("/next")).not.toThrow();
       expect(onAllow).toHaveBeenCalled();
     });
   });
 
-  describe('Performance', () => {
-    it('should update listener when message changes', () => {
+  describe("Performance", () => {
+    it("should update listener when message changes", () => {
       mockUseShouldBlock.mockReturnValue(true);
-      let message = 'Message 1';
+      let message = "Message 1";
 
       const { rerender } = renderHook(() =>
         useNavigationBlocker({
@@ -239,7 +239,7 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
 
       const firstHandler = onMock.mock.calls[0][1];
 
-      message = 'Message 2';
+      message = "Message 2";
       rerender();
 
       const secondHandler = onMock.mock.calls[1][1];
@@ -249,8 +249,8 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
     });
   });
 
-  describe('Edge cases', () => {
-    it('should handle navigation without message', () => {
+  describe("Edge cases", () => {
+    it("should handle navigation without message", () => {
       mockUseShouldBlock.mockReturnValue(true);
 
       renderHook(() =>
@@ -264,14 +264,14 @@ describe('useNavigationBlocker (Next.js Pages Router)', () => {
       expect(onMock).toHaveBeenCalled();
     });
 
-    it('should handle scope array', () => {
+    it("should handle scope array", () => {
       renderHook(() =>
         useNavigationBlocker({
-          scope: ['scope1', 'scope2'],
+          scope: ["scope1", "scope2"],
         })
       );
 
-      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, ['scope1', 'scope2']);
+      expect(mockUseShouldBlock).toHaveBeenCalledWith(undefined, ["scope1", "scope2"]);
     });
   });
 });

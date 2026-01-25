@@ -55,10 +55,10 @@
  */
 
 // Main export defaults to Pages Router for backwards compatibility
-export { useNavigationBlocker } from './usePagesRouterBlocker';
+export { useNavigationBlocker } from "./usePagesRouterBlocker";
 
 // Explicit exports for each router type
-export { useNavigationBlocker as usePagesRouterBlocker } from './usePagesRouterBlocker';
-export { useNavigationBlocker as useAppRouterBlocker } from './useAppRouterBlocker';
+export { useNavigationBlocker as usePagesRouterBlocker } from "./usePagesRouterBlocker";
+export { useNavigationBlocker as useAppRouterBlocker } from "./useAppRouterBlocker";
 
-export type { UseNavigationBlockerOptions } from './types';
+export type { UseNavigationBlockerOptions } from "./types";

@@ -1,14 +1,14 @@
-import { useCallback, useRef, useEffect, useState } from 'react';
-import { useBlocker } from 'react-router-dom';
+import { useCallback, useRef, useEffect, useState } from "react";
+import { useBlocker } from "react-router-dom";
 import {
   useBeforeUnload,
   useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
   isThenable,
   handleConfirmation,
-} from '../core';
-import type { UseNavigationBlockerOptions } from './types';
-import type { NavigationBlockerReturn } from '../core/types';
+} from "../core";
+import type { UseNavigationBlockerOptions } from "./types";
+import type { NavigationBlockerReturn } from "../core/types";
 
 /**
  * Blocks navigation in React Router v6+ applications based on conditions or scope state.
@@ -121,7 +121,7 @@ export function useNavigationBlocker(
       });
 
       // For async confirmations, we need special handling
-      if (result === 'pending' && onConfirm) {
+      if (result === "pending" && onConfirm) {
         const asyncResult = onConfirm(message);
         if (isThenable(asyncResult)) {
           const id = ++confirmSeqRef.current;
@@ -131,7 +131,7 @@ export function useNavigationBlocker(
       }
 
       // For sync results: 'confirmed' means don't block, 'cancelled' means block
-      return result === 'cancelled';
+      return result === "cancelled";
     }, [shouldBlock, message, onBlock, onConfirm, onAllow])
   );
 
@@ -175,6 +175,6 @@ export function useNavigationBlocker(
   useBeforeUnload(blockBrowserUnload && shouldBlock, message ?? DEFAULT_UNLOAD_MESSAGE);
 
   return {
-    isBlocking: shouldBlock && blocker.state === 'blocked',
+    isBlocking: shouldBlock && blocker.state === "blocked",
   };
 }

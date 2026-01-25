@@ -1,4 +1,4 @@
-import type { BaseNavigationBlockerOptions } from '../core/types';
+import type { BaseNavigationBlockerOptions } from "../core/types";
 
 /**
  * Options for Next.js navigation blocker

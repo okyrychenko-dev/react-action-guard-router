@@ -29,19 +29,19 @@
  * The main export provides core utilities that work across all routers:
  */
 
-export { useBeforeUnload } from './core/useBeforeUnload';
-export { useDialogState } from './core/useDialogState';
+export { useBeforeUnload } from "./core/useBeforeUnload";
+export { useDialogState } from "./core/useDialogState";
 export {
   resolveCondition,
   createBlockerId,
   createDialogConfig,
   isDefined,
   normalizeScope,
-} from './core/utils';
+} from "./core/utils";
 export type {
   BaseNavigationBlockerOptions,
   BeforeUnloadOptions,
   ConfirmDialogConfig,
   NavigationBlockerReturn,
-} from './core/types';
-export type { DialogState, UseDialogStateReturn } from './core/useDialogState';
+} from "./core/types";
+export type { DialogState, UseDialogStateReturn } from "./core/useDialogState";

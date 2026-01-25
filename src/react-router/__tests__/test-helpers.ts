@@ -1,30 +1,30 @@
-import { vi, type MockInstance } from 'vitest';
-import type { Blocker, Location } from 'react-router-dom';
+import { vi, type MockInstance } from "vitest";
+import type { Blocker, Location } from "react-router-dom";
 
 const mockLocation: Location = {
-  pathname: '/test',
-  search: '',
-  hash: '',
+  pathname: "/test",
+  search: "",
+  hash: "",
   state: null,
-  key: 'default',
+  key: "default",
 };
 
 /**
  * Creates a properly typed Blocker mock for tests
  */
-export function createBlockerMock(state: 'blocked' | 'unblocked' | 'proceeding'): Blocker {
-  if (state === 'unblocked') {
+export function createBlockerMock(state: "blocked" | "unblocked" | "proceeding"): Blocker {
+  if (state === "unblocked") {
     return {
-      state: 'unblocked',
+      state: "unblocked",
       proceed: undefined,
       reset: undefined,
       location: undefined,
     };
   }
 
-  if (state === 'blocked') {
+  if (state === "blocked") {
     return {
-      state: 'blocked',
+      state: "blocked",
       proceed: vi.fn(),
       reset: vi.fn(),
       location: mockLocation,
@@ -33,7 +33,7 @@ export function createBlockerMock(state: 'blocked' | 'unblocked' | 'proceeding')
 
   // proceeding state
   return {
-    state: 'proceeding',
+    state: "proceeding",
     proceed: undefined,
     reset: undefined,
     location: mockLocation,
@@ -55,5 +55,5 @@ export function getMockCall<TArgs extends unknown[], TReturn>(
  * Type guard for a no-argument blocker function
  */
 export function isNoArgBlocker(fn: unknown): fn is () => boolean {
-  return typeof fn === 'function' && fn.length === 0;
+  return typeof fn === "function" && fn.length === 0;
 }

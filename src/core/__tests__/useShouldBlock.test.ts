@@ -1,24 +1,24 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
-import { useShouldBlock } from '../useShouldBlock';
-import { useIsBlocked } from '@okyrychenko-dev/react-action-guard';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { useShouldBlock } from "../useShouldBlock";
+import { useIsBlocked } from "@okyrychenko-dev/react-action-guard";
 
 // Mock react-action-guard
-vi.mock('@okyrychenko-dev/react-action-guard', () => ({
+vi.mock("@okyrychenko-dev/react-action-guard", () => ({
   useIsBlocked: vi.fn(),
 }));
 
 // Get properly typed mock
 const mockUseIsBlocked = vi.mocked(useIsBlocked);
 
-describe('useShouldBlock', () => {
+describe("useShouldBlock", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseIsBlocked.mockReturnValue(false);
   });
 
-  describe('Condition-based blocking', () => {
-    it('should return false when no conditions are provided', () => {
+  describe("Condition-based blocking", () => {
+    it("should return false when no conditions are provided", () => {
       const { result } = renderHook(() => useShouldBlock(undefined, undefined));
       expect(result.current).toBe(false);
     });
@@ -33,7 +33,7 @@ describe('useShouldBlock', () => {
       expect(result.current).toBe(false);
     });
 
-    it('should handle function condition', () => {
+    it("should handle function condition", () => {
       const condition = vi.fn(() => true);
       const { result } = renderHook(() => useShouldBlock(condition));
 
@@ -41,7 +41,7 @@ describe('useShouldBlock', () => {
       expect(condition).toHaveBeenCalled();
     });
 
-    it('should update when condition changes', () => {
+    it("should update when condition changes", () => {
       let when = false;
       const { result, rerender } = renderHook(() => useShouldBlock(when));
 
@@ -54,64 +54,64 @@ describe('useShouldBlock', () => {
     });
   });
 
-  describe('Scope-based blocking', () => {
-    it('should return true when scope is blocked', () => {
+  describe("Scope-based blocking", () => {
+    it("should return true when scope is blocked", () => {
       mockUseIsBlocked.mockReturnValue(true);
 
-      const { result } = renderHook(() => useShouldBlock(undefined, 'test-scope'));
+      const { result } = renderHook(() => useShouldBlock(undefined, "test-scope"));
 
       expect(result.current).toBe(true);
-      expect(useIsBlocked).toHaveBeenCalledWith('test-scope');
+      expect(useIsBlocked).toHaveBeenCalledWith("test-scope");
     });
 
-    it('should handle array of scopes', () => {
+    it("should handle array of scopes", () => {
       mockUseIsBlocked.mockReturnValue(false);
 
-      const { result } = renderHook(() => useShouldBlock(undefined, ['scope1', 'scope2']));
+      const { result } = renderHook(() => useShouldBlock(undefined, ["scope1", "scope2"]));
 
       expect(result.current).toBe(false);
-      expect(useIsBlocked).toHaveBeenCalledWith(['scope1', 'scope2']);
+      expect(useIsBlocked).toHaveBeenCalledWith(["scope1", "scope2"]);
     });
 
-    it('should return true when single scope in array is blocked', () => {
+    it("should return true when single scope in array is blocked", () => {
       mockUseIsBlocked.mockReturnValue(true);
 
-      const { result } = renderHook(() => useShouldBlock(undefined, ['blocked-scope']));
+      const { result } = renderHook(() => useShouldBlock(undefined, ["blocked-scope"]));
 
       expect(result.current).toBe(true);
-      expect(useIsBlocked).toHaveBeenCalledWith('blocked-scope');
+      expect(useIsBlocked).toHaveBeenCalledWith("blocked-scope");
     });
   });
 
-  describe('Combined conditions (OR logic)', () => {
-    it('should return true if either when=true OR scope is blocked', () => {
+  describe("Combined conditions (OR logic)", () => {
+    it("should return true if either when=true OR scope is blocked", () => {
       mockUseIsBlocked.mockReturnValue(false);
 
-      const { result } = renderHook(() => useShouldBlock(true, 'test-scope'));
+      const { result } = renderHook(() => useShouldBlock(true, "test-scope"));
 
       expect(result.current).toBe(true);
     });
 
-    it('should return true when scope is blocked even if when=false', () => {
+    it("should return true when scope is blocked even if when=false", () => {
       mockUseIsBlocked.mockReturnValue(true);
 
-      const { result } = renderHook(() => useShouldBlock(false, 'test-scope'));
+      const { result } = renderHook(() => useShouldBlock(false, "test-scope"));
 
       expect(result.current).toBe(true);
     });
 
-    it('should return true when both conditions are true', () => {
+    it("should return true when both conditions are true", () => {
       mockUseIsBlocked.mockReturnValue(true);
 
-      const { result } = renderHook(() => useShouldBlock(true, 'test-scope'));
+      const { result } = renderHook(() => useShouldBlock(true, "test-scope"));
 
       expect(result.current).toBe(true);
     });
   });
 
-  describe('Performance optimizations', () => {
-    it('should memoize scope normalization', () => {
-      const scope = 'test-scope';
+  describe("Performance optimizations", () => {
+    it("should memoize scope normalization", () => {
+      const scope = "test-scope";
       const { result, rerender } = renderHook(() => useShouldBlock(undefined, scope));
 
       const firstResult = result.current;
@@ -122,7 +122,7 @@ describe('useShouldBlock', () => {
       expect(firstResult).toBe(secondResult);
     });
 
-    it('should only re-compute when dependencies change', () => {
+    it("should only re-compute when dependencies change", () => {
       const condition = vi.fn(() => true);
       const { rerender } = renderHook(() => useShouldBlock(condition));
 
@@ -137,25 +137,25 @@ describe('useShouldBlock', () => {
     });
   });
 
-  describe('Edge cases', () => {
-    it('should handle undefined scope gracefully', () => {
+  describe("Edge cases", () => {
+    it("should handle undefined scope gracefully", () => {
       const { result } = renderHook(() => useShouldBlock(true, undefined));
       expect(result.current).toBe(true);
     });
 
-    it('should handle empty array scope', () => {
+    it("should handle empty array scope", () => {
       const { result } = renderHook(() => useShouldBlock(undefined, []));
       expect(result.current).toBe(false);
     });
 
-    it('should handle scope changing from undefined to defined', () => {
+    it("should handle scope changing from undefined to defined", () => {
       let scope: string | undefined = undefined;
       const { result, rerender } = renderHook(() => useShouldBlock(undefined, scope));
 
       expect(result.current).toBe(false);
 
       mockUseIsBlocked.mockReturnValue(true);
-      scope = 'new-scope';
+      scope = "new-scope";
       rerender();
 
       expect(result.current).toBe(true);

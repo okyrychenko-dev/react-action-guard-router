@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useIsBlocked } from '@okyrychenko-dev/react-action-guard';
-import { resolveCondition, normalizeScope, isDefined } from './utils';
+import { useEffect, useMemo, useRef } from "react";
+import { useIsBlocked } from "@okyrychenko-dev/react-action-guard";
+import { resolveCondition, normalizeScope, isDefined } from "./utils";
 
 /**
  * Shared hook to determine if blocking should be active based on
@@ -30,7 +30,7 @@ export function useShouldBlock(
   const warnedFunctionRef = useRef(false);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== "development") {
       return;
     }
 
@@ -38,15 +38,15 @@ export function useShouldBlock(
       warnedMissingConditionRef.current = true;
       console.warn(
         '[react-action-guard-router] useShouldBlock: Neither "when" nor "scope" provided. ' +
-          'This hook will always return false. Please provide at least one condition.'
+          "This hook will always return false. Please provide at least one condition."
       );
     }
 
-    if (!warnedFunctionRef.current && typeof when === 'function') {
+    if (!warnedFunctionRef.current && typeof when === "function") {
       warnedFunctionRef.current = true;
       console.warn(
         '[react-action-guard-router] useShouldBlock: "when" is a function. ' +
-          'Make sure to wrap it with useCallback to avoid unnecessary re-computations.'
+          "Make sure to wrap it with useCallback to avoid unnecessary re-computations."
       );
     }
   }, [when, scope]);

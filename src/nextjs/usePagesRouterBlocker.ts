@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import {
   useBeforeUnload,
   useShouldBlock,
@@ -7,9 +7,9 @@ import {
   isThenable,
   ROUTE_ERRORS,
   handleConfirmation,
-} from '../core';
-import type { UseNavigationBlockerOptions } from './types';
-import type { NavigationBlockerReturn } from '../core/types';
+} from "../core";
+import type { UseNavigationBlockerOptions } from "./types";
+import type { NavigationBlockerReturn } from "../core/types";
 
 /**
  * Blocks navigation in Next.js Pages Router applications.
@@ -96,33 +96,33 @@ export function useNavigationBlocker(
 
       // If no message, block silently
       if (!message) {
-        router.events.emit('routeChangeError');
+        router.events.emit("routeChangeError");
         throw new Error(ROUTE_ERRORS.BLOCKED);
       }
 
       // Handle confirmation
       const result = handleConfirmation(message, onConfirm, {
         onCancel: () => {
-          router.events.emit('routeChangeError');
+          router.events.emit("routeChangeError");
         },
       });
 
       // For sync cancelled
-      if (result === 'cancelled') {
+      if (result === "cancelled") {
         throw new Error(ROUTE_ERRORS.ABORTED);
       }
 
       // For sync confirmed
-      if (result === 'confirmed') {
+      if (result === "confirmed") {
         onAllow?.();
         return;
       }
 
       // For async (pending)
-      if (result === 'pending' && onConfirm) {
+      if (result === "pending" && onConfirm) {
         const asyncResult = onConfirm(message);
         if (isThenable(asyncResult)) {
-          router.events.emit('routeChangeError');
+          router.events.emit("routeChangeError");
           Promise.resolve(asyncResult)
             .then((confirmed) => {
               if (confirmed) {
@@ -139,10 +139,10 @@ export function useNavigationBlocker(
       }
     };
 
-    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on("routeChangeStart", handleRouteChangeStart);
 
     return () => {
-      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off("routeChangeStart", handleRouteChangeStart);
     };
   }, [shouldBlock, message, onBlock, onAllow, router, onConfirm]);
 

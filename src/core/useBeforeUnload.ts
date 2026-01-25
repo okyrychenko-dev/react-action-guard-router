@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { resolveCondition } from './utils';
+import { useEffect } from "react";
+import { resolveCondition } from "./utils";
 
 /**
  * Default message shown when preventing browser unload
  */
-export const DEFAULT_UNLOAD_MESSAGE: string = 'Changes you made may not be saved.';
+export const DEFAULT_UNLOAD_MESSAGE: string = "Changes you made may not be saved.";
 
 /**
  * Blocks browser tab close/refresh when condition is met.
@@ -55,15 +55,15 @@ export function useBeforeUnload(
       event.preventDefault();
 
       // Fallback for legacy browsers/WebViews that still rely on returnValue.
-      if ('returnValue' in event) {
+      if ("returnValue" in event) {
         event.returnValue = message;
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [when, message]);
 }

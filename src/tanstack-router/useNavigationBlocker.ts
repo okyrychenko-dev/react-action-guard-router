@@ -1,38 +1,38 @@
-import { useEffect } from 'react';
-import { useRouter } from '@tanstack/react-router';
+import { useEffect } from "react";
+import { useRouter } from "@tanstack/react-router";
 import {
   useBeforeUnload,
   useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
   isThenable,
   handleConfirmation,
-} from '../core';
-import type { UseNavigationBlockerOptions, SafeTanStackRouter } from './types';
-import type { NavigationBlockerReturn } from '../core/types';
+} from "../core";
+import type { UseNavigationBlockerOptions, SafeTanStackRouter } from "./types";
+import type { NavigationBlockerReturn } from "../core/types";
 
 type RetryableUpdate = {
   retry: () => void;
 };
 
 const hasBlockingHistory = (value: unknown): value is SafeTanStackRouter => {
-  if (!value || typeof value !== 'object') {
+  if (!value || typeof value !== "object") {
     return false;
   }
-  if (!('history' in value)) {
+  if (!("history" in value)) {
     return false;
   }
   const history = value.history;
-  if (!history || typeof history !== 'object') {
+  if (!history || typeof history !== "object") {
     return false;
   }
-  if (!('block' in history)) {
+  if (!("block" in history)) {
     return false;
   }
-  return typeof history.block === 'function';
+  return typeof history.block === "function";
 };
 
 const hasRetry = (value: Record<string, unknown>): value is RetryableUpdate =>
-  typeof value.retry === 'function';
+  typeof value.retry === "function";
 
 const attemptRetry = (update: Record<string, unknown>) => {
   if (hasRetry(update)) {
@@ -137,7 +137,7 @@ export function useNavigationBlocker(
       const result = handleConfirmation(message, onConfirm, {});
 
       // For async confirmations, handle Promise
-      if (result === 'pending' && onConfirm) {
+      if (result === "pending" && onConfirm) {
         const asyncResult = onConfirm(message);
         if (isThenable(asyncResult)) {
           Promise.resolve(asyncResult)
@@ -151,8 +151,8 @@ export function useNavigationBlocker(
             .catch((error: unknown) => {
               // On error, unblock but don't retry
               unblock();
-              if (process.env.NODE_ENV !== 'production') {
-                console.error('[react-action-guard-router] Confirmation error:', error);
+              if (process.env.NODE_ENV !== "production") {
+                console.error("[react-action-guard-router] Confirmation error:", error);
               }
             });
         }
@@ -160,7 +160,7 @@ export function useNavigationBlocker(
       }
 
       // For sync confirmations
-      if (result === 'confirmed') {
+      if (result === "confirmed") {
         onAllow?.();
         unblock();
         attemptRetry(update);

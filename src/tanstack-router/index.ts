@@ -21,5 +21,5 @@
  * ```
  */
 
-export { useNavigationBlocker } from './useNavigationBlocker';
-export type { UseNavigationBlockerOptions } from './types';
+export { useNavigationBlocker } from "./useNavigationBlocker";
+export type { UseNavigationBlockerOptions } from "./types";

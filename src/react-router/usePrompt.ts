@@ -1,5 +1,5 @@
-import { useNavigationBlocker } from './useNavigationBlocker';
-import type { UsePromptOptions } from './types';
+import { useNavigationBlocker } from "./useNavigationBlocker";
+import type { UsePromptOptions } from "./types";
 
 /**
  * Simple prompt API similar to React Router v5's `usePrompt`.

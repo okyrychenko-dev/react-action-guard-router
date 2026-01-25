@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from "react";
 
 /**
  * State object for a confirmation dialog
@@ -97,7 +97,7 @@ export interface UseDialogStateReturn<T = string> {
  */
 export function useDialogState<T = string>(): UseDialogStateReturn<T> {
   const [dialogState, setDialogState] = useState<DialogState<T> | null>(null);
-  const resolveRef = useRef<DialogState<T>['resolve'] | null>(null);
+  const resolveRef = useRef<DialogState<T>["resolve"] | null>(null);
 
   const confirm = useCallback((message: T): Promise<boolean> => {
     return new Promise<boolean>((resolve) => {

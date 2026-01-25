@@ -1,39 +1,43 @@
-import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from 'vitest';
-import { renderHook } from '@testing-library/react';
-import { useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from '../useBeforeUnload';
+import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from "vitest";
+import { renderHook } from "@testing-library/react";
+import { useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../useBeforeUnload";
 
-describe('useBeforeUnload', () => {
+describe("useBeforeUnload", () => {
   let addEventListenerSpy: MockInstance<typeof window.addEventListener>;
   let removeEventListenerSpy: MockInstance<typeof window.removeEventListener>;
 
   const getBeforeUnloadHandler = (): EventListener => {
     const call = addEventListenerSpy.mock.calls[0];
-    if (!call) throw new Error('Expected spy to be called');
+    if (!call) {
+      throw new Error("Expected spy to be called");
+    }
 
     const handler = call[1];
-    if (!handler) throw new Error('Expected handler');
+    if (!handler) {
+      throw new Error("Expected handler");
+    }
 
-    if (typeof handler === 'function') {
+    if (typeof handler === "function") {
       return handler;
     }
 
     if (
-      typeof handler === 'object' &&
+      typeof handler === "object" &&
       handler !== null &&
-      'handleEvent' in handler &&
-      typeof handler.handleEvent === 'function'
+      "handleEvent" in handler &&
+      typeof handler.handleEvent === "function"
     ) {
       return (event: Event) => handler.handleEvent(event);
     }
 
-    throw new Error('Expected function handler');
+    throw new Error("Expected function handler");
   };
 
   const createBeforeUnloadEvent = (): BeforeUnloadEvent => new BeforeUnloadEvent();
 
   // Type guard for returnValue property (some DOM types have conflicting definitions)
   const hasReturnValue = (event: Event): event is Event & { returnValue: unknown } => {
-    return 'returnValue' in event;
+    return "returnValue" in event;
   };
 
   const expectReturnValue = (event: BeforeUnloadEvent, expected: string) => {
@@ -47,8 +51,8 @@ describe('useBeforeUnload', () => {
   };
 
   beforeEach(() => {
-    addEventListenerSpy = vi.spyOn(window, 'addEventListener');
-    removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+    addEventListenerSpy = vi.spyOn(window, "addEventListener");
+    removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
   });
 
   afterEach(() => {
@@ -56,20 +60,20 @@ describe('useBeforeUnload', () => {
     removeEventListenerSpy.mockRestore();
   });
 
-  describe('Basic functionality', () => {
-    it('should add beforeunload listener when condition is true', () => {
+  describe("Basic functionality", () => {
+    it("should add beforeunload listener when condition is true", () => {
       renderHook(() => useBeforeUnload(true));
 
-      expect(addEventListenerSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function));
+      expect(addEventListenerSpy).toHaveBeenCalledWith("beforeunload", expect.any(Function));
     });
 
-    it('should not add listener when condition is false', () => {
+    it("should not add listener when condition is false", () => {
       renderHook(() => useBeforeUnload(false));
 
       expect(addEventListenerSpy).not.toHaveBeenCalled();
     });
 
-    it('should handle function condition', () => {
+    it("should handle function condition", () => {
       const condition = vi.fn(() => true);
       renderHook(() => useBeforeUnload(condition));
 
@@ -77,25 +81,25 @@ describe('useBeforeUnload', () => {
       expect(addEventListenerSpy).toHaveBeenCalled();
     });
 
-    it('should use default message when not provided', () => {
+    it("should use default message when not provided", () => {
       renderHook(() => useBeforeUnload(true));
 
       const handler = getBeforeUnloadHandler();
       const event = createBeforeUnloadEvent();
-      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const preventDefaultSpy = vi.spyOn(event, "preventDefault");
       handler(event);
 
       expect(preventDefaultSpy).toHaveBeenCalled();
       expectReturnValue(event, DEFAULT_UNLOAD_MESSAGE);
     });
 
-    it('should use custom message when provided', () => {
-      const customMessage = 'Custom warning message';
+    it("should use custom message when provided", () => {
+      const customMessage = "Custom warning message";
       renderHook(() => useBeforeUnload(true, customMessage));
 
       const handler = getBeforeUnloadHandler();
       const event = createBeforeUnloadEvent();
-      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const preventDefaultSpy = vi.spyOn(event, "preventDefault");
 
       handler(event);
 
@@ -104,18 +108,18 @@ describe('useBeforeUnload', () => {
     });
   });
 
-  describe('Cleanup', () => {
-    it('should remove listener on unmount', () => {
+  describe("Cleanup", () => {
+    it("should remove listener on unmount", () => {
       const { unmount } = renderHook(() => useBeforeUnload(true));
 
       const addedHandler = addEventListenerSpy.mock.calls[0][1];
 
       unmount();
 
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('beforeunload', addedHandler);
+      expect(removeEventListenerSpy).toHaveBeenCalledWith("beforeunload", addedHandler);
     });
 
-    it('should remove listener when condition changes to false', () => {
+    it("should remove listener when condition changes to false", () => {
       let when = true;
       const { rerender } = renderHook(() => useBeforeUnload(when));
 
@@ -127,7 +131,7 @@ describe('useBeforeUnload', () => {
       expect(removeEventListenerSpy).toHaveBeenCalled();
     });
 
-    it('should properly clean up on multiple condition changes', () => {
+    it("should properly clean up on multiple condition changes", () => {
       let when = true;
       const { rerender } = renderHook(() => useBeforeUnload(when));
 
@@ -146,26 +150,26 @@ describe('useBeforeUnload', () => {
     });
   });
 
-  describe('Event handling', () => {
-    it('should call preventDefault on beforeunload event', () => {
+  describe("Event handling", () => {
+    it("should call preventDefault on beforeunload event", () => {
       renderHook(() => useBeforeUnload(true));
 
       const handler = getBeforeUnloadHandler();
       const event = createBeforeUnloadEvent();
-      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const preventDefaultSpy = vi.spyOn(event, "preventDefault");
 
       handler(event);
 
       expect(preventDefaultSpy).toHaveBeenCalled();
     });
 
-    it('should prevent default even with custom message', () => {
-      const message = 'Test message';
+    it("should prevent default even with custom message", () => {
+      const message = "Test message";
       renderHook(() => useBeforeUnload(true, message));
 
       const handler = getBeforeUnloadHandler();
       const event = createBeforeUnloadEvent();
-      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+      const preventDefaultSpy = vi.spyOn(event, "preventDefault");
 
       handler(event);
 
@@ -174,8 +178,8 @@ describe('useBeforeUnload', () => {
     });
   });
 
-  describe('Performance', () => {
-    it('should maintain stable listener reference on re-render with same condition', () => {
+  describe("Performance", () => {
+    it("should maintain stable listener reference on re-render with same condition", () => {
       const { rerender } = renderHook(() => useBeforeUnload(true));
 
       const initialCallCount = addEventListenerSpy.mock.calls.length;
@@ -187,17 +191,17 @@ describe('useBeforeUnload', () => {
       expect(addEventListenerSpy.mock.calls.length).toBeGreaterThanOrEqual(initialCallCount);
     });
 
-    it('should update handler when message changes', () => {
-      let message = 'Message 1';
+    it("should update handler when message changes", () => {
+      let message = "Message 1";
       const { rerender } = renderHook(() => useBeforeUnload(true, message));
 
       const firstHandler = getBeforeUnloadHandler();
 
-      message = 'Message 2';
+      message = "Message 2";
       rerender();
 
       const secondCall = addEventListenerSpy.mock.calls[1];
-      if (!secondCall) throw new Error('Expected second call');
+      if (!secondCall) throw new Error("Expected second call");
       const secondHandler = secondCall[1];
 
       // Handlers should be different (new closure with new message)

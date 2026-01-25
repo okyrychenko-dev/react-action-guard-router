@@ -1,6 +1,6 @@
-import { vi } from 'vitest';
-import type { Mock } from 'vitest';
-import type { NextRouter } from 'next/router';
+import { vi } from "vitest";
+import type { Mock } from "vitest";
+import type { NextRouter } from "next/router";
 
 export type RouterEventHandler = (url: string) => void;
 
@@ -20,11 +20,11 @@ export function createMockRouter(): MockRouter {
   const emit = vi.fn<(event: string) => void>();
 
   return {
-    basePath: '',
-    pathname: '/',
-    route: '/',
+    basePath: "",
+    pathname: "/",
+    route: "/",
     query: {},
-    asPath: '/',
+    asPath: "/",
     back: vi.fn(),
     beforePopState: vi.fn(),
     prefetch: vi.fn().mockResolvedValue(undefined),
@@ -39,7 +39,7 @@ export function createMockRouter(): MockRouter {
     isFallback: false,
     isLocaleDomain: false,
     isReady: true,
-    defaultLocale: 'en',
+    defaultLocale: "en",
     domainLocales: [],
     isPreview: false,
     forward: vi.fn(),
