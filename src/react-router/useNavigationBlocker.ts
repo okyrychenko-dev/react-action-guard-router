@@ -4,8 +4,7 @@ import {
   useBeforeUnload,
   useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
-  isThenable,
-  handleConfirmation,
+  resolveConfirmResult,
 } from "../core";
 import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
@@ -113,25 +112,22 @@ export function useNavigationBlocker(
         return true;
       }
 
-      // Handle confirmation
-      const result = handleConfirmation(message, onConfirm, {
-        onConfirm: () => {
-          onAllow?.();
-        },
-      });
+      const confirmation = resolveConfirmResult(message, onConfirm, (value) =>
+        window.confirm(value)
+      );
 
-      // For async confirmations, we need special handling
-      if (result === "pending" && onConfirm) {
-        const asyncResult = onConfirm(message);
-        if (isThenable(asyncResult)) {
-          const id = ++confirmSeqRef.current;
-          setPendingConfirm({ id, promise: Promise.resolve(asyncResult) });
-          return true;
-        }
+      if (confirmation.kind === "async") {
+        const id = ++confirmSeqRef.current;
+        setPendingConfirm({ id, promise: confirmation.promise });
+        return true;
       }
 
-      // For sync results: 'confirmed' means don't block, 'cancelled' means block
-      return result === "cancelled";
+      if (confirmation.confirmed) {
+        onAllow?.();
+        return false;
+      }
+
+      return true;
     }, [shouldBlock, message, onBlock, onConfirm, onAllow])
   );
 

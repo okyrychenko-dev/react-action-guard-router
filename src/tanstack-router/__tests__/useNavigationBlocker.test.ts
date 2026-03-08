@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { renderHook, waitFor } from "@testing-library/react";
 import { useNavigationBlocker } from "../useNavigationBlocker";
 import { useRouter } from "@tanstack/react-router";
 import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
@@ -31,7 +31,7 @@ const mockUseBeforeUnload = vi.mocked(useBeforeUnload);
 
 describe("useNavigationBlocker (TanStack Router)", () => {
   let mockUnblock: () => void;
-  let mockBlock: SafeTanStackRouter["history"]["block"];
+  let mockBlock: ReturnType<typeof vi.fn<SafeTanStackRouter["history"]["block"]>>;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -187,6 +187,39 @@ describe("useNavigationBlocker (TanStack Router)", () => {
       );
 
       expect(mockBlock).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it("should call async onConfirm only once", async () => {
+      mockUseShouldBlock.mockReturnValue(true);
+      const retry = vi.fn();
+
+      let resolveConfirm: (value: boolean) => void = () => undefined;
+      const confirmPromise = new Promise<boolean>((resolve) => {
+        resolveConfirm = resolve;
+      });
+      const onConfirm = vi.fn(() => confirmPromise);
+      const onAllow = vi.fn();
+
+      renderHook(() =>
+        useNavigationBlocker({
+          when: true,
+          message: "Confirm navigation?",
+          onConfirm,
+          onAllow,
+        })
+      );
+
+      const blockerFn = mockBlock.mock.calls[0]?.[0];
+      expect(blockerFn).toBeTypeOf("function");
+
+      blockerFn?.({ retry });
+
+      resolveConfirm(true);
+      await confirmPromise;
+
+      await waitFor(() => {
+        expect(onConfirm).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

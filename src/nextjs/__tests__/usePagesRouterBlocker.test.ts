@@ -218,6 +218,7 @@ describe("useNavigationBlocker (Next.js Pages Router)", () => {
       await confirmPromise;
       await Promise.resolve();
 
+      expect(onConfirm).toHaveBeenCalledTimes(1);
       expect(mockRouter.push).toHaveBeenCalledWith("/next");
 
       expect(() => handler("/next")).not.toThrow();

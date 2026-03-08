@@ -4,9 +4,8 @@ import {
   useBeforeUnload,
   useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
-  isThenable,
   ROUTE_ERRORS,
-  handleConfirmation,
+  resolveConfirmResult,
 } from "../core";
 import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
@@ -100,43 +99,31 @@ export function useNavigationBlocker(
         throw new Error(ROUTE_ERRORS.BLOCKED);
       }
 
-      // Handle confirmation
-      const result = handleConfirmation(message, onConfirm, {
-        onCancel: () => {
-          router.events.emit("routeChangeError");
-        },
-      });
+      const confirmation = resolveConfirmResult(message, onConfirm, (value) => window.confirm(value));
 
-      // For sync cancelled
-      if (result === "cancelled") {
+      if (confirmation.kind === "sync" && !confirmation.confirmed) {
+        router.events.emit("routeChangeError");
         throw new Error(ROUTE_ERRORS.ABORTED);
       }
 
-      // For sync confirmed
-      if (result === "confirmed") {
+      if (confirmation.kind === "sync") {
         onAllow?.();
         return;
       }
 
-      // For async (pending)
-      if (result === "pending" && onConfirm) {
-        const asyncResult = onConfirm(message);
-        if (isThenable(asyncResult)) {
-          router.events.emit("routeChangeError");
-          Promise.resolve(asyncResult)
-            .then((confirmed) => {
-              if (confirmed) {
-                allowNextUrlRef.current = url;
-                onAllow?.();
-                void router.push(url);
-              }
-            })
-            .catch(() => {
-              // On error, treat as cancelled
-            });
-          throw new Error(ROUTE_ERRORS.ABORTED);
-        }
-      }
+      router.events.emit("routeChangeError");
+      confirmation.promise
+        .then((confirmed) => {
+          if (confirmed) {
+            allowNextUrlRef.current = url;
+            onAllow?.();
+            void router.push(url);
+          }
+        })
+        .catch(() => {
+          // On error, treat as cancelled
+        });
+      throw new Error(ROUTE_ERRORS.ABORTED);
     };
 
     router.events.on("routeChangeStart", handleRouteChangeStart);

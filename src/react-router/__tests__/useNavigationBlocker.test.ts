@@ -192,6 +192,7 @@ describe("useNavigationBlocker (React Router)", () => {
         await confirmPromise;
       });
 
+      expect(onConfirm).toHaveBeenCalledTimes(1);
       expect(blocker.proceed).toHaveBeenCalled();
     });
 
@@ -230,6 +231,7 @@ describe("useNavigationBlocker (React Router)", () => {
         await confirmPromise;
       });
 
+      expect(onConfirm).toHaveBeenCalledTimes(1);
       expect(blocker.reset).toHaveBeenCalled();
       expect(blocker.proceed).not.toHaveBeenCalled();
     });
@@ -273,6 +275,7 @@ describe("useNavigationBlocker (React Router)", () => {
         }
       });
 
+      expect(onConfirm).toHaveBeenCalledTimes(1);
       expect(blocker.reset).toHaveBeenCalled();
       expect(blocker.proceed).not.toHaveBeenCalled();
     });

@@ -4,8 +4,7 @@ import {
   useBeforeUnload,
   useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
-  isThenable,
-  handleConfirmation,
+  resolveConfirmResult,
 } from "../core";
 import type { UseNavigationBlockerOptions, SafeTanStackRouter } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
@@ -133,34 +132,28 @@ export function useNavigationBlocker(
       // Trigger onBlock callback
       onBlock?.();
 
-      // Handle confirmation
-      const result = handleConfirmation(message, onConfirm, {});
+      const confirmation = resolveConfirmResult(message, onConfirm, (value) => window.confirm(value));
 
-      // For async confirmations, handle Promise
-      if (result === "pending" && onConfirm) {
-        const asyncResult = onConfirm(message);
-        if (isThenable(asyncResult)) {
-          Promise.resolve(asyncResult)
-            .then((confirmed) => {
-              if (confirmed) {
-                onAllow?.();
-                unblock();
-                attemptRetry(update);
-              }
-            })
-            .catch((error: unknown) => {
-              // On error, unblock but don't retry
+      if (confirmation.kind === "async") {
+        confirmation.promise
+          .then((confirmed) => {
+            if (confirmed) {
+              onAllow?.();
               unblock();
-              if (process.env.NODE_ENV !== "production") {
-                console.error("[react-action-guard-router] Confirmation error:", error);
-              }
-            });
-        }
+              attemptRetry(update);
+            }
+          })
+          .catch((error: unknown) => {
+            // On error, unblock but don't retry
+            unblock();
+            if (process.env.NODE_ENV !== "production") {
+              console.error("[react-action-guard-router] Confirmation error:", error);
+            }
+          });
         return;
       }
 
-      // For sync confirmations
-      if (result === "confirmed") {
+      if (confirmation.confirmed) {
         onAllow?.();
         unblock();
         attemptRetry(update);

@@ -30,7 +30,7 @@ pnpm add @okyrychenko-dev/react-action-guard-router @okyrychenko-dev/react-actio
 
 This package requires the following peer dependencies:
 
-- [@okyrychenko-dev/react-action-guard](https://www.npmjs.com/package/@okyrychenko-dev/react-action-guard) ^0.7.0 - The core UI blocking library
+- [@okyrychenko-dev/react-action-guard](https://www.npmjs.com/package/@okyrychenko-dev/react-action-guard) ^1.0.1 - The core UI blocking library
 - [React](https://react.dev/) ^18.0.0 || ^19.0.0
 - One of:
   - [react-router-dom](https://reactrouter.com/) ^6.0.0 - For React Router or Remix
@@ -98,7 +98,7 @@ Blocks navigation in router applications based on conditions or scope state.
   - `when?: boolean | (() => boolean)` - Condition to activate blocking
   - `scope?: string | string[]` - Scope(s) from react-action-guard to monitor
   - `message?: string` - Confirmation dialog message
-  - `onConfirm?: (message: string) => boolean | PromiseLike<boolean>` - Custom confirmation handler
+  - `onConfirm?: (message: string) => boolean | PromiseLike<boolean>` - Custom confirmation handler, called once per blocked navigation attempt
   - `onBlock?: () => void` - Callback when navigation is blocked
   - `onAllow?: () => void` - Callback when navigation is allowed
   - `blockBrowserUnload?: boolean` - Block tab close/refresh (default: `true`)
@@ -281,6 +281,8 @@ function MyComponent() {
 }
 ```
 
+Async `onConfirm` is supported and evaluated once per blocked navigation attempt.
+
 ### Next.js Pages Router
 
 Full support with Next.js router events.
@@ -302,7 +304,7 @@ Pages Router does not allow pausing transitions. When you return a Promise from 
 
 ### Next.js App Router
 
-Limited support - only blocks browser navigation, not `<Link>` components.
+Best-effort support only. Browser unload protection works, but App Router does not expose an official navigation-blocking API.
 
 ```tsx
 // app/edit/page.tsx
@@ -323,7 +325,7 @@ function EditPage() {
 - ❌ `<Link>` component navigation is NOT blocked
 - ❌ `router.push()` is NOT blocked
 
-For full blocking support, use Pages Router.
+For full navigation blocking support, use Pages Router.
 
 ---
 
