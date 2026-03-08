@@ -1,7 +1,7 @@
 import { useUIBlockingStore } from "@okyrychenko-dev/react-action-guard";
 import { ReactElement } from "react";
 import "./DebugPanel.css";
-import { BlockerEntry, BlockerItem } from "@/storybook/components";
+import BlockerItem, { BlockerEntry } from "./BlockerItem";
 
 interface DebugPanelProps {
   title?: string;
