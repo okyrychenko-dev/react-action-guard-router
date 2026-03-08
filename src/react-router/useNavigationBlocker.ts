@@ -16,11 +16,6 @@ import type { NavigationBlockerReturn } from "../core/types";
  * allowing you to prevent navigation when certain conditions are met or when specific
  * scopes are blocked.
  *
- * **Performance optimizations:**
- * - Uses stable references for function conditions
- * - Memoizes callback to prevent unnecessary re-renders
- * - Synchronous blocking state computation
- *
  * **Features:**
  * - Block navigation based on boolean condition or function
  * - Automatically block when react-action-guard scopes are active
@@ -64,10 +59,7 @@ import type { NavigationBlockerReturn } from "../core/types";
  * function CheckoutFlow() {
  *   useNavigationBlocker({
  *     scope: 'checkout',
- *     title: 'Cancel Checkout?',
  *     message: 'Your items will still be in your cart.',
- *     confirmText: 'Cancel Checkout',
- *     cancelText: 'Continue Shopping',
  *     blockBrowserUnload: true,
  *   });
  * }
@@ -171,6 +163,7 @@ export function useNavigationBlocker(
   useBeforeUnload(blockBrowserUnload && shouldBlock, message ?? DEFAULT_UNLOAD_MESSAGE);
 
   return {
-    isBlocking: shouldBlock && blocker.state === "blocked",
+    isBlocking: shouldBlock,
+    isIntercepting: blocker.state === "blocked",
   };
 }

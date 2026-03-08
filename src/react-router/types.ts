@@ -16,7 +16,7 @@ export interface UseNavigationBlockerOptions extends BaseNavigationBlockerOption
  */
 export type UsePromptOptions = Omit<
   BaseNavigationBlockerOptions,
-  "message" | "when" | "scope" | "title" | "confirmText" | "cancelText"
+  "message" | "when" | "scope"
 > & {
   /**
    * Message to show in confirmation dialog

@@ -34,14 +34,12 @@ export { useDialogState } from "./core/useDialogState";
 export {
   resolveCondition,
   createBlockerId,
-  createDialogConfig,
   isDefined,
   normalizeScope,
 } from "./core/utils";
 export type {
   BaseNavigationBlockerOptions,
   BeforeUnloadOptions,
-  ConfirmDialogConfig,
   NavigationBlockerReturn,
 } from "./core/types";
 export type { DialogState, UseDialogStateReturn } from "./core/useDialogState";

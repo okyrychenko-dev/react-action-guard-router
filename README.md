@@ -15,7 +15,7 @@
 - 🌐 **Browser Protection** - Prevents tab close/refresh with `beforeunload` events
 - 🔄 **Sync & Async Handlers** - Support for both synchronous and Promise-based confirmations
 - 📦 **Tree-Shakeable** - Import only the router adapter you need
-- 🔒 **Type-Safe** - Full TypeScript support with type inference
+- 🔒 **TypeScript-Friendly** - Strong editor support and typed router adapters
 - 🧹 **Auto Cleanup** - Automatic listener cleanup on component unmount
 
 ## Installation
@@ -104,6 +104,9 @@ Blocks navigation in router applications based on conditions or scope state.
   - `blockBrowserUnload?: boolean` - Block tab close/refresh (default: `true`)
 
 **Returns:** `{ isBlocking: boolean }`
+
+- `isBlocking` - Blocking condition is armed for this adapter
+- `isIntercepting?: boolean` - Active interception state when the router can expose it
 
 **Available in:**
 - `@okyrychenko-dev/react-action-guard-router/react-router` - React Router v6+ & Remix
@@ -265,6 +268,7 @@ function MyComponent() {
 ```
 
 > **Note:** Remix uses React Router v6 internally, so the React Router adapter works seamlessly in Remix applications.
+> `isIntercepting` is available here because React Router exposes blocker state directly.
 
 ### TanStack Router
 
@@ -326,6 +330,15 @@ function EditPage() {
 - ❌ `router.push()` is NOT blocked
 
 For full navigation blocking support, use Pages Router.
+
+## Adapter Capabilities
+
+| Adapter | `isBlocking` meaning | `isIntercepting` | Async `onConfirm` | Caveats |
+| --- | --- | --- | --- | --- |
+| React Router | Blocking condition is armed | Yes | Yes | Best semantic fidelity |
+| TanStack Router | Blocking condition is armed | No | Yes | Depends on history.block integration |
+| Next.js Pages Router | Blocking condition is armed | No | Yes | Re-attempts confirmed navigation with `router.push(url)` |
+| Next.js App Router | Blocking condition is armed | No | Best effort only | No official blocker API from Next.js |
 
 ---
 
@@ -405,7 +418,7 @@ function FileUploader() {
 
 ## TypeScript
 
-Full TypeScript support with type inference:
+TypeScript-friendly API surface:
 
 ```typescript
 import type {
@@ -421,7 +434,7 @@ import type {
 import type { UseNavigationBlockerOptions } from '@okyrychenko-dev/react-action-guard-router/react-router';
 ```
 
-**Type-safe scopes:**
+**Typed scopes with `react-action-guard`:**
 
 ```tsx
 import { createTypedHooks } from '@okyrychenko-dev/react-action-guard';
@@ -430,10 +443,10 @@ type AppScopes = 'form' | 'checkout' | 'navigation';
 const { useBlocker } = createTypedHooks<AppScopes>();
 
 function MyComponent() {
-  useBlocker('id', { scope: 'form' });  // ✅ Type-safe
+  useBlocker('id', { scope: 'form' });  // ✅ Typed in the core package
 
   useNavigationBlocker({
-    scope: 'form',  // ✅ Also type-safe
+    scope: 'form',  // ✅ Reuses the same scope values cleanly
     message: 'Leave form?',
   });
 }
@@ -467,6 +480,9 @@ npm install
 # Run tests
 npm run test
 
+# Run the full local verification pipeline
+npm run check
+
 # Build the package
 npm run build
 
@@ -494,7 +510,7 @@ npm run lint:fix
 
 Contributions are welcome! Please ensure:
 
-1. All tests pass (`npm run test`)
+1. Full verification passes (`npm run check`)
 2. Code is properly typed (`npm run typecheck`)
 3. Linting passes (`npm run lint`)
 4. Code is formatted (`npm run lint:fix`)

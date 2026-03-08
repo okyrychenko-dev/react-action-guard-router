@@ -10,7 +10,6 @@ export { useDialogState } from "./useDialogState";
 export {
   resolveCondition,
   createBlockerId,
-  createDialogConfig,
   isDefined,
   normalizeScope,
   isThenable,
@@ -25,7 +24,6 @@ export {
 export type {
   BaseNavigationBlockerOptions,
   BeforeUnloadOptions,
-  ConfirmDialogConfig,
   NavigationBlockerReturn,
 } from "./types";
 export type { DialogState, UseDialogStateReturn } from "./useDialogState";

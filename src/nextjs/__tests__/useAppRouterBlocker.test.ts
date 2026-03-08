@@ -140,7 +140,7 @@ describe("useNavigationBlocker (Next.js App Router)", () => {
   });
 
   describe("Callbacks", () => {
-    it("should call onBlock when blocking becomes active", () => {
+    it("should not call onBlock without observable navigation interception", () => {
       const onBlock = vi.fn();
       mockUseShouldBlock.mockReturnValue(false);
 
@@ -156,7 +156,7 @@ describe("useNavigationBlocker (Next.js App Router)", () => {
       mockUseShouldBlock.mockReturnValue(true);
       rerender();
 
-      expect(onBlock).toHaveBeenCalled();
+      expect(onBlock).not.toHaveBeenCalled();
     });
 
     it("should not call onAllow (limitation of App Router)", () => {

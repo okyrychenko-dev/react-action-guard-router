@@ -56,7 +56,7 @@ import type { NavigationBlockerReturn } from "../core/types";
 export function useNavigationBlocker(
   options: UseNavigationBlockerOptions
 ): NavigationBlockerReturn {
-  const { when, scope, message, onBlock, blockBrowserUnload = true } = options;
+  const { when, scope, message, blockBrowserUnload = true } = options;
 
   // Use shared logic to determine if blocking should be active
   const shouldBlock = useShouldBlock(when, scope);
@@ -74,13 +74,6 @@ export function useNavigationBlocker(
   // Best effort: Block browser navigation via beforeunload
   // This will prevent tab close, refresh, and some browser back/forward
   useBeforeUnload(blockBrowserUnload && shouldBlock, message ?? DEFAULT_UNLOAD_MESSAGE);
-
-  // Trigger callbacks when blocking state changes
-  useEffect(() => {
-    if (shouldBlock) {
-      onBlock?.();
-    }
-  }, [shouldBlock, onBlock]);
 
   return {
     isBlocking: shouldBlock,

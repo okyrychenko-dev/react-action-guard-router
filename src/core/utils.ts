@@ -1,5 +1,3 @@
-import type { ConfirmDialogConfig } from "./types";
-
 /**
  * Resolves a condition value (boolean or function returning boolean)
  *
@@ -70,29 +68,6 @@ export function createBlockerId(prefix: string, scope?: string | string[]): stri
   const scopePart = scope ? `-${Array.isArray(scope) ? scope.join("-") : scope}` : "";
   const timestamp = Date.now();
   return `${prefix}${scopePart}-${timestamp}`;
-}
-
-/**
- * Creates default confirmation dialog configuration
- *
- * @param message - Custom message or undefined for default
- * @param title - Custom title or undefined for default
- * @param confirmText - Custom confirm button text or undefined for default
- * @param cancelText - Custom cancel button text or undefined for default
- * @returns Complete dialog configuration
- */
-export function createDialogConfig(
-  message?: string,
-  title?: string,
-  confirmText?: string,
-  cancelText?: string
-): ConfirmDialogConfig {
-  return {
-    title: title ?? "Confirm Navigation",
-    message: message ?? "Are you sure you want to leave? Changes you made may not be saved.",
-    confirmText: confirmText ?? "Leave",
-    cancelText: cancelText ?? "Stay",
-  };
 }
 
 /**

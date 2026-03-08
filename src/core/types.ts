@@ -25,24 +25,6 @@ export interface BaseNavigationBlockerOptions {
   message?: string;
 
   /**
-   * Title for confirmation dialog
-   * @default "Confirm Navigation"
-   */
-  title?: string;
-
-  /**
-   * Text for confirm button
-   * @default "Leave"
-   */
-  confirmText?: string;
-
-  /**
-   * Text for cancel button
-   * @default "Stay"
-   */
-  cancelText?: string;
-
-  /**
    * Callback when navigation is blocked
    */
   onBlock?: () => void;
@@ -116,36 +98,17 @@ export interface BeforeUnloadOptions {
 }
 
 /**
- * Confirmation dialog configuration
- */
-export interface ConfirmDialogConfig {
-  /**
-   * Dialog title
-   */
-  title: string;
-
-  /**
-   * Dialog message
-   */
-  message: string;
-
-  /**
-   * Confirm button text
-   */
-  confirmText: string;
-
-  /**
-   * Cancel button text
-   */
-  cancelText: string;
-}
-
-/**
  * Return type for navigation blocker hooks
  */
 export interface NavigationBlockerReturn {
   /**
-   * Whether navigation is currently being blocked
+   * Whether the blocking condition is currently active.
    */
   isBlocking: boolean;
+
+  /**
+   * Whether navigation is currently being intercepted.
+   * Only available for adapters that can observe active interception state.
+   */
+  isIntercepting?: boolean;
 }
