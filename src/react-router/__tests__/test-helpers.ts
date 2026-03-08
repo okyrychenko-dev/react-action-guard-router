@@ -1,4 +1,4 @@
-import { vi, type MockInstance } from "vitest";
+import { type MockInstance, vi } from "vitest";
 import type { Blocker, Location } from "react-router-dom";
 
 const mockLocation: Location = {
@@ -43,8 +43,8 @@ export function createBlockerMock(state: "blocked" | "unblocked" | "proceeding")
 /**
  * Helper to safely access mock calls
  */
-export function getMockCall<TArgs extends unknown[], TReturn>(
-  mock: MockInstance<(...args: TArgs) => TReturn>,
+export function getMockCall<TArgs extends Array<unknown>>(
+  mock: MockInstance<(...args: TArgs) => unknown>,
   index: number
 ): TArgs | undefined {
   const calls = mock.mock.calls;

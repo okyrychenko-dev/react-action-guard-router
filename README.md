@@ -8,7 +8,7 @@
 
 ## Features
 
-- 🛣️ **Multi-Router Support** - React Router v6+, Remix, TanStack Router, Next.js Pages & App Router
+- 🛣️ **Multi-Router Support** - React Router v6+, Remix, TanStack Router, Next.js Pages Router, and best-effort App Router support
 - 🎯 **Scope-Based Blocking** - Synchronize navigation blocking with UI blocking scopes
 - 🚦 **Condition-Based Blocking** - Block based on boolean conditions or functions
 - 💬 **Custom Dialog Support** - `useDialogState` helper for async confirmation dialogs
@@ -35,7 +35,7 @@ This package requires the following peer dependencies:
 - One of:
   - [react-router-dom](https://reactrouter.com/) ^6.0.0 - For React Router or Remix
   - [@tanstack/react-router](https://tanstack.com/router) ^1.0.0 - For TanStack Router
-  - [next](https://nextjs.org/) ^13.4.0 - For Next.js (stable App Router support)
+  - [next](https://nextjs.org/) ^13.4.0 - For Next.js Pages Router and best-effort App Router support
 - [Zustand](https://zustand-demo.pmnd.rs/) - State management (peer dependency of react-action-guard)
 
 ## Quick Start
@@ -103,7 +103,7 @@ Blocks navigation in router applications based on conditions or scope state.
   - `onAllow?: () => void` - Callback when navigation is allowed
   - `blockBrowserUnload?: boolean` - Block tab close/refresh (default: `true`)
 
-**Returns:** `{ isBlocking: boolean }`
+**Returns:** `{ isBlocking: boolean; isIntercepting?: boolean }`
 
 - `isBlocking` - Blocking condition is armed for this adapter
 - `isIntercepting?: boolean` - Active interception state when the router can expose it
@@ -480,9 +480,6 @@ npm install
 # Run tests
 npm run test
 
-# Run the full local verification pipeline
-npm run check
-
 # Build the package
 npm run build
 
@@ -510,10 +507,10 @@ npm run lint:fix
 
 Contributions are welcome! Please ensure:
 
-1. Full verification passes (`npm run check`)
+1. Tests pass (`npm run test:run`)
 2. Code is properly typed (`npm run typecheck`)
 3. Linting passes (`npm run lint`)
-4. Code is formatted (`npm run lint:fix`)
+4. Code is formatted (`npm run format`)
 
 ---
 

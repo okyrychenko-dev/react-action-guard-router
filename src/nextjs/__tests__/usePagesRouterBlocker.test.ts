@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { useNavigationBlocker } from "../usePagesRouterBlocker";
 import { useRouter } from "next/router";
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { DEFAULT_UNLOAD_MESSAGE, useBeforeUnload, useShouldBlock } from "../../core";
+import { useNavigationBlocker } from "../usePagesRouterBlocker";
 import { createMockRouter } from "./test-helpers";
 import type { MockRouter, RouterEventHandler } from "./test-helpers";
 import type { Mock } from "vitest";

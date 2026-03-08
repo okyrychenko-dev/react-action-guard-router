@@ -1,12 +1,12 @@
-import { ReactElement, useState } from "react";
 import { useBlocker, useIsBlocked } from "@okyrychenko-dev/react-action-guard";
+import { ReactElement, useState } from "react";
 import { useNavigationBlocker } from "../react-router";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  MockRouterProvider,
-  StatusDisplay,
   InfoBox,
+  MockRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -87,7 +87,9 @@ const CombinedSourcesDemo = (): ReactElement => {
             <input
               type="checkbox"
               checked={hasUnsavedChanges}
-              onChange={(e) => setHasUnsavedChanges(e.target.checked)}
+              onChange={(e) => {
+                setHasUnsavedChanges(e.target.checked);
+              }}
               className="checkbox-label"
             />
             Mark form as dirty (local condition)

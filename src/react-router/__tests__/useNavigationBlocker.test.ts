@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useNavigationBlocker } from "../useNavigationBlocker";
-import type { UseNavigationBlockerOptions } from "../types";
+import { act, renderHook } from "@testing-library/react";
 import { useBlocker } from "react-router-dom";
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { DEFAULT_UNLOAD_MESSAGE, useBeforeUnload, useShouldBlock } from "../../core";
+import { useNavigationBlocker } from "../useNavigationBlocker";
 import { createBlockerMock, isNoArgBlocker } from "./test-helpers";
+import type { UseNavigationBlockerOptions } from "../types";
 
 // Mock dependencies
 vi.mock("react-router-dom", () => ({

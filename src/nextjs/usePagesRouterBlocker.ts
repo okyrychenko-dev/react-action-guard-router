@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
 import {
-  useBeforeUnload,
-  useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
   ROUTE_ERRORS,
   resolveConfirmResult,
+  useBeforeUnload,
+  useShouldBlock,
 } from "../core";
 import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
@@ -82,7 +82,7 @@ export function useNavigationBlocker(
       return;
     }
 
-    const handleRouteChangeStart = (url: string) => {
+    const handleRouteChangeStart = (url: string): void => {
       // Early return for allowed URL
       if (allowNextUrlRef.current === url) {
         allowNextUrlRef.current = null;
@@ -99,7 +99,9 @@ export function useNavigationBlocker(
         throw new Error(ROUTE_ERRORS.BLOCKED);
       }
 
-      const confirmation = resolveConfirmResult(message, onConfirm, (value) => window.confirm(value));
+      const confirmation = resolveConfirmResult(message, onConfirm, (value) =>
+        window.confirm(value)
+      );
 
       if (confirmation.kind === "sync" && !confirmation.confirmed) {
         router.events.emit("routeChangeError");

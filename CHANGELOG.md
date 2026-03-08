@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-08
+
+### Changed
+
+- Normalized `useNavigationBlocker` semantics across adapters so `isBlocking` consistently means the blocking condition is armed
+- Added optional `isIntercepting` for adapters that can expose an active interception state directly
+- Tightened the public confirmation API to the parts that are actually supported end-to-end
+- Clarified README guidance around adapter capabilities, async confirmation behavior, and Next.js App Router limitations
+- Aligned package scripts and Storybook component exports with the current package structure
+
+### Fixed
+
+- Async `onConfirm` handlers are now evaluated once per blocked navigation attempt across adapters
+- Storybook barrel exports and imports now match the reusable components and utilities shipped with the package
+
 ## [0.1.0] - 2026-01-25
 
 ### Added
@@ -19,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Scope-based and condition-based blocking
 - **TanStack Router Integration**
   - `useNavigationBlocker` hook using TanStack Router's history blocking
-  - Full support for modern type-safe routing
+  - Support for modern TanStack Router applications
   - Scope-based and condition-based blocking
 - **Next.js Integration**
   - Pages Router support with full navigation blocking (Next.js 9+)
@@ -41,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Promise-based confirmation flow
   - Browser `beforeunload` event protection
   - Customizable confirmation dialogs
-  - TypeScript support with full type inference
+  - TypeScript-friendly API surface
   - Tree-shakeable with subpath exports
   - Callbacks for block/allow events
   - Automatic cleanup on unmount
@@ -105,9 +120,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Requirements
 
 - **Peer Dependencies**:
-  - `@okyrychenko-dev/react-action-guard` ^0.7.0
+  - `@okyrychenko-dev/react-action-guard` ^1.0.1
   - `react` ^18.0.0 || ^19.0.0
-  - One of: `react-router-dom` ^6.0.0, `@tanstack/react-router` ^1.0.0, or `next` ^9.0.0
+  - One of: `react-router-dom` ^6.0.0, `@tanstack/react-router` ^1.0.0, or `next` ^13.4.0
 
-[Unreleased]: https://github.com/okyrychenko-dev/react-action-guard-router/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/okyrychenko-dev/react-action-guard-router/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/okyrychenko-dev/react-action-guard-router/releases/tag/v0.2.0
 [0.1.0]: https://github.com/okyrychenko-dev/react-action-guard-router/releases/tag/v0.1.0

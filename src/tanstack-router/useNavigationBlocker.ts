@@ -1,17 +1,18 @@
-import { useEffect } from "react";
 import { useRouter } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
-  useBeforeUnload,
-  useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
   resolveConfirmResult,
+  useBeforeUnload,
+  useShouldBlock,
 } from "../core";
-import type { UseNavigationBlockerOptions, SafeTanStackRouter } from "./types";
+import type { SafeTanStackRouter, UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
 
-type RetryableUpdate = {
+interface RetryableUpdate {
+  [key: string]: unknown;
   retry: () => void;
-};
+}
 
 const hasBlockingHistory = (value: unknown): value is SafeTanStackRouter => {
   if (!value || typeof value !== "object") {
@@ -33,7 +34,7 @@ const hasBlockingHistory = (value: unknown): value is SafeTanStackRouter => {
 const hasRetry = (value: Record<string, unknown>): value is RetryableUpdate =>
   typeof value.retry === "function";
 
-const attemptRetry = (update: Record<string, unknown>) => {
+const attemptRetry = (update: Record<string, unknown>): void => {
   if (hasRetry(update)) {
     try {
       update.retry();
@@ -132,7 +133,9 @@ export function useNavigationBlocker(
       // Trigger onBlock callback
       onBlock?.();
 
-      const confirmation = resolveConfirmResult(message, onConfirm, (value) => window.confirm(value));
+      const confirmation = resolveConfirmResult(message, onConfirm, (value) =>
+        window.confirm(value)
+      );
 
       if (confirmation.kind === "async") {
         confirmation.promise

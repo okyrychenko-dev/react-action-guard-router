@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { usePrompt, usePromptWithOptions } from "../usePrompt";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useNavigationBlocker } from "../useNavigationBlocker";
+import { usePrompt, usePromptWithOptions } from "../usePrompt";
 
 // Mock useNavigationBlocker
 vi.mock("../useNavigationBlocker", () => ({

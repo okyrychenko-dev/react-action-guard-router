@@ -4,7 +4,7 @@ import { resolveCondition } from "./utils";
 /**
  * Default message shown when preventing browser unload
  */
-export const DEFAULT_UNLOAD_MESSAGE: string = "Changes you made may not be saved.";
+export const DEFAULT_UNLOAD_MESSAGE = "Changes you made may not be saved.";
 
 /**
  * Blocks browser tab close/refresh when condition is met.
@@ -41,7 +41,7 @@ export const DEFAULT_UNLOAD_MESSAGE: string = "Changes you made may not be saved
  */
 export function useBeforeUnload(
   when: boolean | (() => boolean),
-  message: string = DEFAULT_UNLOAD_MESSAGE
+  message = DEFAULT_UNLOAD_MESSAGE
 ): void {
   useEffect(() => {
     const shouldBlock = resolveCondition(when);
@@ -50,12 +50,13 @@ export function useBeforeUnload(
       return;
     }
 
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
       // Prevent default to trigger the browser's confirmation dialog
       event.preventDefault();
 
       // Fallback for legacy browsers/WebViews that still rely on returnValue.
       if ("returnValue" in event) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         event.returnValue = message;
       }
     };

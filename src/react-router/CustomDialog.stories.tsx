@@ -1,16 +1,16 @@
 import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
+import { useBeforeUnload, useDialogState } from "../core";
 import { useNavigationBlocker } from "../react-router";
-import { useDialogState, useBeforeUnload } from "../core";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  MockRouterProvider,
-  ConfirmDialog,
-  StatusDisplay,
-  FormField,
   ActionButtons,
+  ConfirmDialog,
+  FormField,
   InfoBox,
+  MockRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -83,7 +83,9 @@ const CustomDialogDemo = (): ReactElement => {
           label="Title"
           value={formData.title}
           placeholder="Enter article title"
-          onChange={(value: string) => handleChange("title", value)}
+          onChange={(value: string) => {
+            handleChange("title", value);
+          }}
         />
         <FormField
           label="Content"
@@ -91,7 +93,9 @@ const CustomDialogDemo = (): ReactElement => {
           value={formData.content}
           placeholder="Write your article content..."
           rows={4}
-          onChange={(value: string) => handleChange("content", value)}
+          onChange={(value: string) => {
+            handleChange("content", value);
+          }}
         />
         <ActionButtons
           disabled={!hasUnsavedChanges}

@@ -31,12 +31,7 @@
 
 export { useBeforeUnload } from "./core/useBeforeUnload";
 export { useDialogState } from "./core/useDialogState";
-export {
-  resolveCondition,
-  createBlockerId,
-  isDefined,
-  normalizeScope,
-} from "./core/utils";
+export { resolveCondition, createBlockerId, isDefined, normalizeScope } from "./core/utils";
 export type {
   BaseNavigationBlockerOptions,
   BeforeUnloadOptions,

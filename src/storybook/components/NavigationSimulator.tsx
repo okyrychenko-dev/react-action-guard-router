@@ -2,7 +2,7 @@ import { ReactElement, useState } from "react";
 import "./NavigationSimulator.css";
 
 interface NavigationSimulatorProps {
-  destinations?: string[];
+  destinations?: Array<string>;
   isBlocked?: boolean;
   onNavigate?: (path: string) => void;
 }
@@ -32,7 +32,9 @@ function NavigationSimulator(props: NavigationSimulatorProps): ReactElement {
         {destinations.map((path) => (
           <button
             key={path}
-            onClick={() => handleNavigate(path)}
+            onClick={() => {
+              handleNavigate(path);
+            }}
             className={`destination-btn ${isBlocked ? "is-blocked" : ""}`}
             type="button"
           >

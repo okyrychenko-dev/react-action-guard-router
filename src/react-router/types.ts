@@ -14,10 +14,7 @@ export interface UseNavigationBlockerOptions extends BaseNavigationBlockerOption
 /**
  * Simple prompt options (React Router v5 compatibility)
  */
-export type UsePromptOptions = Omit<
-  BaseNavigationBlockerOptions,
-  "message" | "when" | "scope"
-> & {
+export type UsePromptOptions = Omit<BaseNavigationBlockerOptions, "message" | "when" | "scope"> & {
   /**
    * Message to show in confirmation dialog
    */

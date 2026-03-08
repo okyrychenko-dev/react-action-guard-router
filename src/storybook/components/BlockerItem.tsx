@@ -1,6 +1,6 @@
-import { formatScope } from "@/storybook/components/BlockerItem.utils";
 import { StoredBlocker } from "@okyrychenko-dev/react-action-guard";
 import { ReactElement } from "react";
+import { formatScope } from "@/storybook/components";
 
 export interface BlockerEntry {
   id: string;

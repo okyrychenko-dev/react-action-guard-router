@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
 import { useIsBlocked } from "@okyrychenko-dev/react-action-guard";
-import { resolveCondition, normalizeScope, isDefined } from "./utils";
+import { useEffect, useMemo, useRef } from "react";
+import { isDefined, normalizeScope, resolveCondition } from "./utils";
 
 /**
  * Shared hook to determine if blocking should be active based on
@@ -17,7 +17,7 @@ import { resolveCondition, normalizeScope, isDefined } from "./utils";
  */
 export function useShouldBlock(
   when?: boolean | (() => boolean),
-  scope?: string | string[]
+  scope?: string | Array<string>
 ): boolean {
   // Memoize scope normalization to avoid recalculation on every render
   const scopes = useMemo(() => normalizeScope(scope), [scope]);

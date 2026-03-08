@@ -1,16 +1,16 @@
 import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigationBlocker } from "../react-router";
 import { useDialogState } from "../core";
+import { useNavigationBlocker } from "../react-router";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  MockRouterProvider,
-  ConfirmDialog,
-  StatusDisplay,
-  FormField,
   ActionButtons,
+  ConfirmDialog,
+  FormField,
   InfoBox,
+  MockRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -29,7 +29,7 @@ const AsyncConfirmDemo = (): ReactElement => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [note, setNote] = useState("");
-  const { dialogState, confirm, onConfirm, onCancel } = useDialogState<string>();
+  const { dialogState, confirm, onConfirm, onCancel } = useDialogState();
 
   const handleAsyncConfirm = async (message: string): Promise<boolean> => {
     const accepted = await confirm(message);

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { StoryContainer, InfoBox } from "../storybook/components";
+import { InfoBox, StoryContainer } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "./components/shared.stories.css";
 

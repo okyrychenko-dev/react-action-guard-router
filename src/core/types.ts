@@ -16,7 +16,7 @@ export interface BaseNavigationBlockerOptions {
    * Scope(s) from react-action-guard to check for blocking
    * When specified, navigation is blocked if any of these scopes are currently blocked
    */
-  scope?: string | string[];
+  scope?: string | Array<string>;
 
   /**
    * Message to show in confirmation dialog

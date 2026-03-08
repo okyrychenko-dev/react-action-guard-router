@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
-import { useNavigationBlocker } from "../useNavigationBlocker";
 import { useRouter } from "@tanstack/react-router";
-import { useShouldBlock, useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../../core";
+import { renderHook, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { DEFAULT_UNLOAD_MESSAGE, useBeforeUnload, useShouldBlock } from "../../core";
+import { useNavigationBlocker } from "../useNavigationBlocker";
 import type { SafeTanStackRouter } from "../types";
 
 type RouterMock = SafeTanStackRouter | { history: null };

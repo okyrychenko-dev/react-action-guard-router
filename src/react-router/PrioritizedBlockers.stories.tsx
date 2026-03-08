@@ -1,13 +1,13 @@
-import { ReactElement, useState } from "react";
 import { useBlocker } from "@okyrychenko-dev/react-action-guard";
 import clsx from "clsx";
+import { ReactElement, useState } from "react";
 import { useNavigationBlocker } from "../react-router";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  MockRouterProvider,
-  StatusDisplay,
   InfoBox,
+  MockRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -19,21 +19,21 @@ import "../storybook/components/shared.stories.css";
  * Navigation blocking should align with the highest-priority blocker.
  */
 
-type BlockerConfig = {
+interface BlockerConfig {
   id: string;
   label: string;
   scope: string;
   priority: number;
-};
+}
 
-const blockers: BlockerConfig[] = [
+const blockers: Array<BlockerConfig> = [
   { id: "upload", label: "Upload in progress", scope: "upload", priority: 90 },
   { id: "payment", label: "Payment processing", scope: "payment", priority: 80 },
   { id: "draft", label: "Unsaved draft", scope: "draft", priority: 50 },
 ];
 
 const PrioritizedBlockersDemo = (): ReactElement => {
-  const [activeIds, setActiveIds] = useState<string[]>([]);
+  const [activeIds, setActiveIds] = useState<Array<string>>([]);
 
   // Activate blockers based on toggles
   const uploadActive = activeIds.includes("upload");

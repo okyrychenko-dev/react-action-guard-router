@@ -1,15 +1,15 @@
 import { ReactElement, useState } from "react";
 // import { usePagesRouterBlocker } from '../nextjs'; // Not used in Storybook demo
-import { useDialogState, useBeforeUnload } from "../core";
+import { useBeforeUnload, useDialogState } from "../core";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  ConfirmDialog,
-  StatusDisplay,
-  FormField,
   ActionButtons,
-  InfoBox,
   CodeBlock,
+  ConfirmDialog,
+  FormField,
+  InfoBox,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -94,13 +94,17 @@ const NextPagesRouterDemo = (): ReactElement => {
           label="Product Name"
           value={formData.productName}
           placeholder="Enter product name"
-          onChange={(value: string) => handleChange("productName", value)}
+          onChange={(value: string) => {
+            handleChange("productName", value);
+          }}
         />
         <FormField
           label="Price"
           value={formData.price}
           placeholder="Enter price"
-          onChange={(value: string) => handleChange("price", value)}
+          onChange={(value: string) => {
+            handleChange("price", value);
+          }}
         />
         <FormField
           label="Description"
@@ -108,7 +112,9 @@ const NextPagesRouterDemo = (): ReactElement => {
           value={formData.description}
           placeholder="Enter product description..."
           rows={4}
-          onChange={(value: string) => handleChange("description", value)}
+          onChange={(value: string) => {
+            handleChange("description", value);
+          }}
         />
         <ActionButtons
           disabled={!hasUnsavedChanges}

@@ -1,17 +1,17 @@
 import { ReactElement, useState } from "react";
 // import { Link } from '@tanstack/react-router'; // Not used in Storybook demo
 // import { useNavigationBlocker } from '../tanstack-router'; // Not used in Storybook demo
-import { useDialogState, useBeforeUnload } from "../core";
+import { useBeforeUnload, useDialogState } from "../core";
 import {
-  StoryContainer,
-  ConfirmDialog,
-  StatusDisplay,
-  FormField,
   ActionButtons,
-  InfoBox,
   CodeBlock,
-  NavigationSimulator,
+  ConfirmDialog,
+  FormField,
+  InfoBox,
   MockTanStackRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -95,7 +95,9 @@ const TanStackRouterDemo = (): ReactElement => {
           label="Title"
           value={formData.title}
           placeholder="Enter post title"
-          onChange={(value) => handleChange("title", value)}
+          onChange={(value) => {
+            handleChange("title", value);
+          }}
         />
         <FormField
           label="Content"
@@ -103,7 +105,9 @@ const TanStackRouterDemo = (): ReactElement => {
           value={formData.content}
           placeholder="Write your post content..."
           rows={4}
-          onChange={(value) => handleChange("content", value)}
+          onChange={(value) => {
+            handleChange("content", value);
+          }}
         />
         <div className="form-group">
           <label className="form-label">Tags</label>
@@ -112,7 +116,9 @@ const TanStackRouterDemo = (): ReactElement => {
             className="form-input"
             value={formData.tags}
             placeholder="Enter tags (comma separated)"
-            onChange={(e) => handleChange("tags", e.target.value)}
+            onChange={(e) => {
+              handleChange("tags", e.target.value);
+            }}
           />
         </div>
         <ActionButtons

@@ -1,12 +1,12 @@
-import { ReactElement, ChangeEvent } from "react";
+import { ChangeEvent, ReactElement } from "react";
 
 interface FormFieldProps {
   label: string;
   value: string;
-  onChange: (value: string) => void;
   placeholder?: string;
   type?: "text" | "textarea";
   rows?: number;
+  onChange: (value: string) => void;
 }
 
 function FormField(props: FormFieldProps): ReactElement {

@@ -1,15 +1,15 @@
 import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigationBlocker } from "../react-router";
 import { useBeforeUnload } from "../core";
+import { useNavigationBlocker } from "../react-router";
 import {
-  StoryContainer,
-  NavigationSimulator,
-  MockRouterProvider,
-  StatusDisplay,
-  FormField,
   ActionButtons,
+  FormField,
   InfoBox,
+  MockRouterProvider,
+  NavigationSimulator,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -73,13 +73,17 @@ const WindowConfirmDemo = (): ReactElement => {
           label="Name"
           value={formData.name}
           placeholder="Enter your name"
-          onChange={(value: string) => handleChange("name", value)}
+          onChange={(value: string) => {
+            handleChange("name", value);
+          }}
         />
         <FormField
           label="Email"
           value={formData.email}
           placeholder="Enter your email"
-          onChange={(value: string) => handleChange("email", value)}
+          onChange={(value: string) => {
+            handleChange("email", value);
+          }}
         />
         <ActionButtons
           disabled={!hasUnsavedChanges}

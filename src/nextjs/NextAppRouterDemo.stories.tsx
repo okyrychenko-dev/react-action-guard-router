@@ -2,12 +2,12 @@ import { ReactElement, useState } from "react";
 // import { useAppRouterBlocker } from '../nextjs'; // Not used in Storybook demo
 import { useBeforeUnload } from "../core";
 import {
-  StoryContainer,
-  StatusDisplay,
-  FormField,
   ActionButtons,
-  InfoBox,
   CodeBlock,
+  FormField,
+  InfoBox,
+  StatusDisplay,
+  StoryContainer,
 } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
@@ -75,7 +75,9 @@ const NextAppRouterDemo = (): ReactElement => {
           label="Title"
           value={formData.title}
           placeholder="Enter title"
-          onChange={(value: string) => handleChange("title", value)}
+          onChange={(value: string) => {
+            handleChange("title", value);
+          }}
         />
         <FormField
           label="Content"
@@ -83,7 +85,9 @@ const NextAppRouterDemo = (): ReactElement => {
           value={formData.content}
           placeholder="Write content..."
           rows={4}
-          onChange={(value: string) => handleChange("content", value)}
+          onChange={(value: string) => {
+            handleChange("content", value);
+          }}
         />
         <ActionButtons
           disabled={!hasUnsavedChanges}

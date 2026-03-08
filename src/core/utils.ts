@@ -8,9 +8,9 @@ export function resolveCondition(condition: boolean | (() => boolean)): boolean 
   return typeof condition === "function" ? condition() : condition;
 }
 
-type Thenable = {
-  then: (...args: unknown[]) => unknown;
-};
+interface Thenable {
+  then: (...args: Array<unknown>) => unknown;
+}
 
 const hasThen = (value: unknown): value is Thenable =>
   typeof value === "object" && value !== null && "then" in value;
@@ -25,15 +25,15 @@ export function isThenable<T>(value: unknown): value is PromiseLike<T> {
   return typeof value.then === "function";
 }
 
-export type ConfirmResultSync = {
+export interface ConfirmResultSync {
   kind: "sync";
   confirmed: boolean;
-};
+}
 
-export type ConfirmResultAsync = {
+export interface ConfirmResultAsync {
   kind: "async";
   promise: Promise<boolean>;
-};
+}
 
 export type ConfirmResult = ConfirmResultSync | ConfirmResultAsync;
 
@@ -64,9 +64,9 @@ export function resolveConfirmResult(
  * @param scope - Optional scope
  * @returns Unique blocker ID
  */
-export function createBlockerId(prefix: string, scope?: string | string[]): string {
+export function createBlockerId(prefix: string, scope?: string | Array<string>): string {
   const scopePart = scope ? `-${Array.isArray(scope) ? scope.join("-") : scope}` : "";
-  const timestamp = Date.now();
+  const timestamp = String(Date.now());
   return `${prefix}${scopePart}-${timestamp}`;
 }
 
@@ -86,7 +86,7 @@ export function isDefined<T>(value: T | undefined | null): value is T {
  * @param scope - String or array of strings
  * @returns Array of scope strings
  */
-export function normalizeScope(scope: string | string[] | undefined): string[] {
+export function normalizeScope(scope: string | Array<string> | undefined): Array<string> {
   if (!scope) {
     return [];
   }

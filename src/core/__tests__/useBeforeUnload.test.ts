@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance } from "vitest";
 import { renderHook } from "@testing-library/react";
-import { useBeforeUnload, DEFAULT_UNLOAD_MESSAGE } from "../useBeforeUnload";
+import { type MockInstance, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DEFAULT_UNLOAD_MESSAGE, useBeforeUnload } from "../useBeforeUnload";
 
 describe("useBeforeUnload", () => {
   let addEventListenerSpy: MockInstance<typeof window.addEventListener>;

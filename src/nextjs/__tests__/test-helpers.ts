@@ -1,14 +1,14 @@
 import { vi } from "vitest";
-import type { Mock } from "vitest";
 import type { NextRouter } from "next/router";
+import type { Mock } from "vitest";
 
 export type RouterEventHandler = (url: string) => void;
 
-type MockRouterEvents = {
+interface MockRouterEvents {
   on: Mock<(event: string, handler: RouterEventHandler) => void>;
   off: Mock<(event: string, handler: RouterEventHandler) => void>;
   emit: Mock<(event: string) => void>;
-};
+}
 
 export type MockRouter = NextRouter & {
   events: MockRouterEvents;

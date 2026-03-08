@@ -1,4 +1,5 @@
 export { default as StoryContainer } from "./StoryContainer";
+export { default as BlockerItem } from "./BlockerItem";
 export { default as ConfirmDialog } from "./ConfirmDialog";
 export { default as DebugPanel } from "./DebugPanel";
 export { default as NavigationSimulator } from "./NavigationSimulator";
@@ -9,3 +10,5 @@ export { default as FormField } from "./FormField";
 export { default as ActionButtons } from "./ActionButtons";
 export { default as InfoBox } from "./InfoBox";
 export { default as CodeBlock } from "./CodeBlock";
+export { formatScope } from "./BlockerItem.utils";
+export type { BlockerEntry } from "./BlockerItem";

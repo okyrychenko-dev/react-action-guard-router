@@ -1,10 +1,10 @@
-import { useCallback, useRef, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useBlocker } from "react-router-dom";
 import {
-  useBeforeUnload,
-  useShouldBlock,
   DEFAULT_UNLOAD_MESSAGE,
   resolveConfirmResult,
+  useBeforeUnload,
+  useShouldBlock,
 } from "../core";
 import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
@@ -73,6 +73,7 @@ export function useNavigationBlocker(
     scope,
     message,
     blockBrowserUnload = true,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     block, // deprecated, for backwards compatibility
     onBlock,
     onAllow,

@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook } from "@testing-library/react";
-import { useShouldBlock } from "../useShouldBlock";
 import { useIsBlocked } from "@okyrychenko-dev/react-action-guard";
+import { renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useShouldBlock } from "../useShouldBlock";
 
 // Mock react-action-guard
 vi.mock("@okyrychenko-dev/react-action-guard", () => ({

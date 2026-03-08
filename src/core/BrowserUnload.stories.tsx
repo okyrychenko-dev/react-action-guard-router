@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { useBeforeUnload } from "../core";
-import { StoryContainer, StatusDisplay, InfoBox } from "../storybook/components";
+import { InfoBox, StatusDisplay, StoryContainer } from "../storybook/components";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "../storybook/components/shared.stories.css";
 

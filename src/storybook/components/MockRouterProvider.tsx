@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactElement } from "react";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createMemoryRouter } from "react-router-dom";
 
 /**
  * Wraps stories in a React Router context for Storybook
