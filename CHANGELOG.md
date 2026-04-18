@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-04-18
+
+### Changed
+
+- Raised `@okyrychenko-dev/react-action-guard` compatibility to the `1.0.2` line
+- Updated the transitive toolkit override to `react-zustand-toolkit@^0.4.0`
+
 ## [0.2.1] - 2026-03-08
 
 ### Fixed
@@ -126,11 +133,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Requirements
 
 - **Peer Dependencies**:
-  - `@okyrychenko-dev/react-action-guard` ^1.0.1
+  - `@okyrychenko-dev/react-action-guard` ^1.0.2
   - `react` ^18.0.0 || ^19.0.0
   - One of: `react-router-dom` ^6.0.0, `@tanstack/react-router` ^1.0.0, or `next` ^13.4.0
 
-[Unreleased]: https://github.com/okyrychenko-dev/react-action-guard-router/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/okyrychenko-dev/react-action-guard-router/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/okyrychenko-dev/react-action-guard-router/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/okyrychenko-dev/react-action-guard-router/releases/tag/v0.2.1
 [0.2.0]: https://github.com/okyrychenko-dev/react-action-guard-router/releases/tag/v0.2.0
 [0.1.0]: https://github.com/okyrychenko-dev/react-action-guard-router/releases/tag/v0.1.0
