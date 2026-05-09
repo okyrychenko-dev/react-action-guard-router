@@ -6,8 +6,8 @@ import {
   useBeforeUnload,
   useShouldBlock,
 } from "../core";
-import type { SafeTanStackRouter, UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
+import type { SafeTanStackRouter, UseNavigationBlockerOptions } from "./types";
 
 interface RetryableUpdate {
   [key: string]: unknown;

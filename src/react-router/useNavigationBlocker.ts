@@ -6,8 +6,8 @@ import {
   useBeforeUnload,
   useShouldBlock,
 } from "../core";
-import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
+import type { UseNavigationBlockerOptions } from "./types";
 
 /**
  * Blocks navigation in React Router v6+ applications based on conditions or scope state.

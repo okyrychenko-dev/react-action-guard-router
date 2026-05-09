@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { DEFAULT_UNLOAD_MESSAGE, useBeforeUnload, useShouldBlock } from "../core";
-import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
+import type { UseNavigationBlockerOptions } from "./types";
 
 /**
  * Blocks navigation in Next.js App Router applications.

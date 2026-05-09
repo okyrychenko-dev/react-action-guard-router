@@ -7,8 +7,8 @@ import {
   useBeforeUnload,
   useShouldBlock,
 } from "../core";
-import type { UseNavigationBlockerOptions } from "./types";
 import type { NavigationBlockerReturn } from "../core/types";
+import type { UseNavigationBlockerOptions } from "./types";
 
 /**
  * Blocks navigation in Next.js Pages Router applications.
